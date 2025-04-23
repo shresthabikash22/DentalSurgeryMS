@@ -3,10 +3,9 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 import com.bikash.cs.dentalsurgeryms.dto.request.UserRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.UserResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.Role;
-import com.bikash.cs.dentalsurgeryms.exception.role.DuplicateRoleException;
+import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
+import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.exception.role.InvalidRoleException;
-import com.bikash.cs.dentalsurgeryms.exception.user.DuplicateUserException;
-import com.bikash.cs.dentalsurgeryms.exception.user.UserNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.UserMapper;
 import com.bikash.cs.dentalsurgeryms.model.User;
 import com.bikash.cs.dentalsurgeryms.repository.UserRepository;
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
             }
 
             if(new HashSet<>(roleStrings).size() != roleStrings.size()){
-                throw new DuplicateRoleException("Duplicate roles found.");
+                throw new DuplicateResourceException("Duplicate roles found.");
             }
         }
     }
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
         if(userRepository.findByUsername(userRequestDto.username()).isPresent()){
-            throw new DuplicateUserException("Username '" + userRequestDto.username() + "' is already taken");
+            throw new DuplicateResourceException("Username '" + userRequestDto.username() + "' is already taken");
         }
         validateRoles(userRequestDto.roles());
 
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User with username '" + username + "' not found."));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User with username '" + username + "' not found."));
         return userMapper.userToUserResponseDto(user);
     }
 
@@ -77,10 +76,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto updateUser(String username, UserRequestDto userRequestDto) {
-        User existingUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User with username '" + username+ "' not found."));
+        User existingUser = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User with username '" + username+ "' not found."));
         if(!existingUser.getUsername().equals(userRequestDto.username()) &&
                 userRepository.findByUsername(userRequestDto.username()).isPresent()){
-                throw new DuplicateUserException("Username '" + userRequestDto.username() + "' is already taken");
+                throw new DuplicateResourceException("Username '" + userRequestDto.username() + "' is already taken");
         }
         validateRoles(userRequestDto.roles());
 
@@ -98,7 +97,7 @@ public class UserServiceImpl implements UserService {
             User user = optionalUser.get();
             userRepository.deleteByUsername(user.getUsername());
         }else{
-            throw new UserNotFoundException("User with username '" + name + "' not found.");
+            throw new ResourceNotFoundException("User with username '" + name + "' not found.");
         }
     }
 

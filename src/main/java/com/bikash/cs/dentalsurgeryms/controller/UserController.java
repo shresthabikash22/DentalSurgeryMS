@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +34,16 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserResponseDto>> getAllUsers(
+    public ResponseEntity<PagedModel<EntityModel<UserResponseDto>>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(defaultValue = "userId") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDirection
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            PagedResourcesAssembler<UserResponseDto> pagedResourcesAssembler
     ) {
         Page<UserResponseDto> usersPage = userService.getAllUsers(page, pageSize, sortDirection, sortBy);
-        return ResponseEntity.status(HttpStatus.OK).body(usersPage);
+        PagedModel<EntityModel<UserResponseDto>> pagedModel = pagedResourcesAssembler.toModel(usersPage);
+        return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
     @PutMapping("/{username}")

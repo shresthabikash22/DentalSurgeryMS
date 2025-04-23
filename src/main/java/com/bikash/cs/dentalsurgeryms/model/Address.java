@@ -22,18 +22,19 @@ public class Address {
     @NotBlank(message = "City is required")
     @Size(max = 50, message = "City must be up to 50 characters")
     private String city;
+
     @NotBlank(message = "State is required")
     @Size(max = 50, message = "State must be up to 50 characters")
     private String state;
 
     @NotBlank(message = "Zip is required")
     @Size(max = 10, message = "Zip must be up to 10 characters")
-    private String zip;
+    private String zipCode;
 
     public Address(String street, String city, String state, String zip) {
         this.street = street;
         this.city = city;
         this.state = state;
-        this.zip = zip;
+        this.zipCode = zip;
     }
 }

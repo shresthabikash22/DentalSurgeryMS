@@ -1,0 +1,71 @@
+package com.bikash.cs.dentalsurgeryms.mapper;
+
+import com.bikash.cs.dentalsurgeryms.dto.request.AddressRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.AddressResponseDto;
+import com.bikash.cs.dentalsurgeryms.model.Address;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2025-04-23T02:11:50-0500",
+    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
+)
+@Component
+public class AddressMapperImpl implements AddressMapper {
+
+    @Override
+    public Address addressRequestDtoToAddress(AddressRequestDto addressRequestDto) {
+        if ( addressRequestDto == null ) {
+            return null;
+        }
+
+        Address address = new Address();
+
+        address.setStreet( addressRequestDto.street() );
+        address.setCity( addressRequestDto.city() );
+        address.setState( addressRequestDto.state() );
+        address.setZipCode( addressRequestDto.zipCode() );
+
+        return address;
+    }
+
+    @Override
+    public AddressResponseDto addressToAddressResponseDto(Address address) {
+        if ( address == null ) {
+            return null;
+        }
+
+        Long addressId = null;
+        String street = null;
+        String city = null;
+        String state = null;
+        String zipCode = null;
+
+        addressId = address.getId();
+        street = address.getStreet();
+        city = address.getCity();
+        state = address.getState();
+        zipCode = address.getZipCode();
+
+        AddressResponseDto addressResponseDto = new AddressResponseDto( addressId, street, city, state, zipCode );
+
+        return addressResponseDto;
+    }
+
+    @Override
+    public List<AddressResponseDto> addressToAddressResponseDto(List<Address> addresses) {
+        if ( addresses == null ) {
+            return null;
+        }
+
+        List<AddressResponseDto> list = new ArrayList<AddressResponseDto>( addresses.size() );
+        for ( Address address : addresses ) {
+            list.add( addressToAddressResponseDto( address ) );
+        }
+
+        return list;
+    }
+}

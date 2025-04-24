@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface AddressRepository extends JpaRepository<Address,Long> {
     Page<Address> findAll(Pageable pageable);
+
+    Optional<Address> findByStreet(String street);
 }

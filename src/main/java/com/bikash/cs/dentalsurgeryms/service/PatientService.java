@@ -1,14 +1,15 @@
 package com.bikash.cs.dentalsurgeryms.service;
 
 
-import com.bikash.cs.dentalsurgeryms.model.Patient;
-
-import java.util.List;
-import java.util.Optional;
+import com.bikash.cs.dentalsurgeryms.dto.request.PatientRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PatientService {
-    Patient savePatient(Patient patient);
-    List<Patient> getAllPatients();
-    Optional<Patient> getPatientById(Long id);
-    void deletePatient(Long id);
+    PatientResponseDto createPatient(PatientRequestDto patientRequestDto);
+    PatientResponseDto getPatientByEmail(String email);
+    Page<PatientResponseDto> getAllPatients(int page, int pageSize, String sortDirection, String sortBy);
+    PatientResponseDto updatePatient(String email, PatientRequestDto patientRequestDto);
+    void deletePatient(String email);
 }

@@ -1,9 +1,7 @@
 package com.bikash.cs.dentalsurgeryms.controller;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AddressRequestDto;
-import com.bikash.cs.dentalsurgeryms.dto.request.UserRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.AddressResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.UserResponseDto;
 import com.bikash.cs.dentalsurgeryms.service.AddressService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +25,9 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAddress);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AddressResponseDto> getAddressById(@PathVariable Long id) {
-        AddressResponseDto address = addressService.getAddressById(id);
+    @GetMapping("/{street}")
+    public ResponseEntity<AddressResponseDto> getAddressByStreet(@PathVariable String street) {
+        AddressResponseDto address = addressService.getAddressByStreet(street);
         return ResponseEntity.status(HttpStatus.OK).body(address);
     }
 
@@ -46,15 +44,15 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressRequestDto addressRequestDto) {
-        AddressResponseDto updatedAddress = addressService.updateAddress(id, addressRequestDto);
+    @PutMapping("/{street}")
+    public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable String street, @Valid @RequestBody AddressRequestDto addressRequestDto) {
+        AddressResponseDto updatedAddress = addressService.updateAddress(street, addressRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedAddress);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<AddressResponseDto> deleteAddress(@PathVariable Long id) {
-        addressService.deleteAddress(id);
+    @DeleteMapping("/{street}")
+    public ResponseEntity<AddressResponseDto> deleteAddress(@PathVariable String street) {
+        addressService.deleteAddress(street);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

@@ -1,11 +1,16 @@
 package com.bikash.cs.dentalsurgeryms.model;
 
 import com.bikash.cs.dentalsurgeryms.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +18,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
-@Data
+@Getter @Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +40,11 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Patient patient;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Dentist dentist;
 
     public User(String username, String password) {

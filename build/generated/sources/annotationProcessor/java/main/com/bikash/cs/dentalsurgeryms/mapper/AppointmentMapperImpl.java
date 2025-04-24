@@ -1,0 +1,127 @@
+package com.bikash.cs.dentalsurgeryms.mapper;
+
+import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryResponseDto;
+import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
+import com.bikash.cs.dentalsurgeryms.model.Appointment;
+import com.bikash.cs.dentalsurgeryms.model.Dentist;
+import com.bikash.cs.dentalsurgeryms.model.Patient;
+import com.bikash.cs.dentalsurgeryms.model.Surgery;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2025-04-24T03:41:43-0500",
+    comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
+)
+@Component
+public class AppointmentMapperImpl implements AppointmentMapper {
+
+    @Autowired
+    private PatientMapper patientMapper;
+    @Autowired
+    private DentistMapper dentistMapper;
+    @Autowired
+    private SurgeryMapper surgeryMapper;
+
+    @Override
+    public Appointment appointmentRequestDtoToAppointment(AppointmentRequestDto appointmentRequestDto) {
+        if ( appointmentRequestDto == null ) {
+            return null;
+        }
+
+        Appointment appointment = new Appointment();
+
+        appointment.setPatient( appointmentRequestDtoToPatient( appointmentRequestDto ) );
+        appointment.setDentist( appointmentRequestDtoToDentist( appointmentRequestDto ) );
+        appointment.setSurgery( appointmentRequestDtoToSurgery( appointmentRequestDto ) );
+        appointment.setAppointmentDateTime( appointmentRequestDto.appointmentDateTime() );
+
+        appointment.setStatus( com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus.SCHEDULED );
+
+        return appointment;
+    }
+
+    @Override
+    public AppointmentResponseDto appointmentToAppointmentResponseDto(Appointment appointment) {
+        if ( appointment == null ) {
+            return null;
+        }
+
+        Long id = null;
+        LocalDateTime appointmentDateTime = null;
+        AppointmentStatus status = null;
+        PatientResponseDto patient = null;
+        DentistResponseDto dentist = null;
+        SurgeryResponseDto surgery = null;
+
+        id = appointment.getId();
+        appointmentDateTime = appointment.getAppointmentDateTime();
+        status = appointment.getStatus();
+        patient = patientMapper.patientToPatientResponseDto( appointment.getPatient() );
+        dentist = dentistMapper.dentistToDentistResponseDto( appointment.getDentist() );
+        surgery = surgeryMapper.surgeryToSurgeryResponseDto( appointment.getSurgery() );
+
+        AppointmentResponseDto appointmentResponseDto = new AppointmentResponseDto( id, appointmentDateTime, status, patient, dentist, surgery );
+
+        return appointmentResponseDto;
+    }
+
+    @Override
+    public List<AppointmentResponseDto> appointmentsToAppointmentResponseDtos(List<Appointment> appointments) {
+        if ( appointments == null ) {
+            return null;
+        }
+
+        List<AppointmentResponseDto> list = new ArrayList<AppointmentResponseDto>( appointments.size() );
+        for ( Appointment appointment : appointments ) {
+            list.add( appointmentToAppointmentResponseDto( appointment ) );
+        }
+
+        return list;
+    }
+
+    protected Patient appointmentRequestDtoToPatient(AppointmentRequestDto appointmentRequestDto) {
+        if ( appointmentRequestDto == null ) {
+            return null;
+        }
+
+        Patient patient = new Patient();
+
+        patient.setId( appointmentRequestDto.patientId() );
+
+        return patient;
+    }
+
+    protected Dentist appointmentRequestDtoToDentist(AppointmentRequestDto appointmentRequestDto) {
+        if ( appointmentRequestDto == null ) {
+            return null;
+        }
+
+        Dentist dentist = new Dentist();
+
+        dentist.setId( appointmentRequestDto.dentistId() );
+
+        return dentist;
+    }
+
+    protected Surgery appointmentRequestDtoToSurgery(AppointmentRequestDto appointmentRequestDto) {
+        if ( appointmentRequestDto == null ) {
+            return null;
+        }
+
+        Surgery surgery = new Surgery();
+
+        surgery.setId( appointmentRequestDto.surgeryId() );
+
+        return surgery;
+    }
+}

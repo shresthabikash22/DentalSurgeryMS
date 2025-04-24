@@ -17,6 +17,7 @@ public class Address {
 
     @NotBlank(message = "Street is required")
     @Size(max = 100, message = "Street must be up to 100 characters")
+    @Column(unique = true)
     private String street;
 
     @NotBlank(message = "City is required")

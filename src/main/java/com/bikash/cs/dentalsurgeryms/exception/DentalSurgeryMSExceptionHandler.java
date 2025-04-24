@@ -1,8 +1,6 @@
 package com.bikash.cs.dentalsurgeryms.exception;
 
-import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
-import com.bikash.cs.dentalsurgeryms.exception.general.MethodArgumentNotValidException;
-import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
+import com.bikash.cs.dentalsurgeryms.exception.general.*;
 import com.bikash.cs.dentalsurgeryms.exception.role.InvalidRoleException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -37,6 +35,18 @@ public class DentalSurgeryMSExceptionHandler {
     public ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request){
         ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.BAD_REQUEST.value(), Instant.now());
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<ApiError> handleInvalidOperationException(InvalidOperationException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT.value(), Instant.now());
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AppointmentNotificationFailedException.class)
+    public ResponseEntity<ApiError> handleMessagingException(AppointmentNotificationFailedException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.INTERNAL_SERVER_ERROR.value(), Instant.now());
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

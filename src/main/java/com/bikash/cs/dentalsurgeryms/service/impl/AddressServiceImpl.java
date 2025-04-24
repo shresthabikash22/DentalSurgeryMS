@@ -2,6 +2,7 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AddressRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.AddressResponseDto;
+import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
 import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.AddressMapper;
 import com.bikash.cs.dentalsurgeryms.model.Address;
@@ -14,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
@@ -24,13 +23,19 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressResponseDto createAddress(AddressRequestDto addressRequestDto) {
+        if (addressRepository.findByStreet(addressRequestDto.street()).isPresent()) {
+            throw new DuplicateResourceException("Street '" + addressRequestDto.street() + "' is already taken");
+        }
+
         Address address = addressMapper.addressRequestDtoToAddress(addressRequestDto);
-        return addressMapper.addressToAddressResponseDto(addressRepository.save(address));
+        Address savedAddress = addressRepository.save(address);
+        return addressMapper.addressToAddressResponseDto(savedAddress);
     }
 
     @Override
-    public AddressResponseDto getAddressById(Long id) {
-        Address address = addressRepository.findById(id).orElse(null);
+    public AddressResponseDto getAddressByStreet(String street) {
+        Address address = addressRepository.findByStreet(street)
+                .orElseThrow(() -> new ResourceNotFoundException("Address with street '" + street + "' not found"));
         return addressMapper.addressToAddressResponseDto(address);
     }
 
@@ -47,20 +52,25 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressResponseDto updateAddress(Long id, AddressRequestDto addressRequestDto) {
-        Address existingAddress = addressRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Address with id '" + id + "' not found"));
+    public AddressResponseDto updateAddress(String street, AddressRequestDto addressRequestDto) {
+        Address existingAddress = addressRepository.findByStreet(street)
+                .orElseThrow(() -> new ResourceNotFoundException("Address with street '" + street + "' not found"));
+
+        if (!existingAddress.getStreet().equals(addressRequestDto.street()) &&
+                addressRepository.findByStreet(addressRequestDto.street()).isPresent()) {
+            throw new DuplicateResourceException("Street '" + addressRequestDto.street() + "' is already taken");
+        }
 
         Address updatedAddress = addressMapper.addressRequestDtoToAddress(addressRequestDto);
-        updatedAddress.setId(existingAddress.getId());
+        updatedAddress.setId (existingAddress.getId());
         Address savedAddress = addressRepository.save(updatedAddress);
         return addressMapper.addressToAddressResponseDto(savedAddress);
     }
 
     @Override
-    public void deleteAddress(Long id) {
-        Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Address with id '" + id + "' not found"));
+    public void deleteAddress(String street) {
+        Address address = addressRepository.findByStreet(street)
+                .orElseThrow(() -> new ResourceNotFoundException("Address with street '" + street + "' not found"));
         addressRepository.delete(address);
     }
 }

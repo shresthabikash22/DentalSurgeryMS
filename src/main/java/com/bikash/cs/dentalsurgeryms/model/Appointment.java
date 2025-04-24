@@ -1,5 +1,7 @@
 package com.bikash.cs.dentalsurgeryms.model;
 
+import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -20,32 +22,36 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotNull(message = "Date is required")
-    @FutureOrPresent(message = "Date must be today or in the future")
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    @NotNull(message = "Appointment date and time cannot be null")
+    @Column(nullable = false)
+    private LocalDateTime appointmentDateTime;
 
-    @NotBlank(message = "Time is required")
-    @Size(max = 8, message = "Time must be up to 8 characters")
-    private String time;
-
-    @NotBlank(message = "Status is required")
-    @Size(max = 20, message = "Status must be up to 20 characters")
-    private String status;
+    @NotNull(message = "Status cannot be null")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AppointmentStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
-    @NotNull(message = "Patient is required")
+    @JoinColumn(name = "patient_id", nullable = false)
+    @JsonBackReference(value = "patient-appointment")
     private Patient patient;
 
     @ManyToOne
-    @JoinColumn(name = "dentist_id")
-    @NotNull(message = "Dentist is required")
+    @JoinColumn(name = "dentist_id", nullable = false)
+    @JsonBackReference(value = "dentist-appointment")
     private Dentist dentist;
 
     @ManyToOne
-    @JoinColumn(name = "surgery_id")
-    @NotNull(message = "Surgery is required")
+    @JoinColumn(name = "surgery_id", nullable = false)
+    @JsonBackReference(value = "surgery-appointment")
     private Surgery surgery;
+
+    public Appointment(LocalDateTime appointmentDateTime, AppointmentStatus status, Patient patient, Dentist dentist, Surgery surgery) {
+        this.appointmentDateTime = appointmentDateTime;
+        this.status = status;
+        this.patient = patient;
+        this.dentist = dentist;
+        this.surgery = surgery;
+    }
 
 }

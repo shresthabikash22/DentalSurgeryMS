@@ -1,15 +1,16 @@
 package com.bikash.cs.dentalsurgeryms.service;
 
 
-import com.bikash.cs.dentalsurgeryms.model.Surgery;
-
-import java.util.List;
-import java.util.Optional;
+import com.bikash.cs.dentalsurgeryms.dto.request.SurgeryRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryResponseDto;
+import org.springframework.data.domain.Page;
 
 public interface SurgeryService {
-    Surgery saveSurgery(Surgery surgery);
-    List<Surgery> getAllSurgeries();
-    Optional<Surgery> getSurgeryById(Long id);
-    void deleteSurgery(Long id);
+
+    SurgeryResponseDto createSurgery(SurgeryRequestDto surgeryRequestDto);
+    SurgeryResponseDto getSurgeryByBranchCode(String branchCode);
+    Page<SurgeryResponseDto> getAllSurgeries(int page,int pageSize,String sortDirection,String sortBy);
+    SurgeryResponseDto updateSurgery(String branchCode, SurgeryRequestDto surgeryRequestDto);
+    void deleteSurgery(String branchCode);
 
 }

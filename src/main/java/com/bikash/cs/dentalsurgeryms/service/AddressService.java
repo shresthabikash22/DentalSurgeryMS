@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface AddressService {
     AddressResponseDto createAddress(AddressRequestDto addressRequestDto);
-    AddressResponseDto getAddressById(Long id);
+    AddressResponseDto getAddressByStreet(String street);
     Page<AddressResponseDto> getAllAddresses(int page,int pageSize,String sortDirection,String sortBy);
-    AddressResponseDto updateAddress(Long id, AddressRequestDto addressRequestDto);
-    void deleteAddress(Long id);
+    AddressResponseDto updateAddress(String street, AddressRequestDto addressRequestDto);
+    void deleteAddress(String street);
 }

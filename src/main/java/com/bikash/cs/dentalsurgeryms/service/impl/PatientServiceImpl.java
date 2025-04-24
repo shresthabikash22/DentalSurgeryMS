@@ -2,6 +2,8 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.PatientRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
+import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
+import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
 import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
 import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.PatientMapper;
@@ -10,7 +12,9 @@ import com.bikash.cs.dentalsurgeryms.model.User;
 import com.bikash.cs.dentalsurgeryms.repository.AddressRepository;
 import com.bikash.cs.dentalsurgeryms.repository.PatientRepository;
 import com.bikash.cs.dentalsurgeryms.repository.UserRepository;
+import com.bikash.cs.dentalsurgeryms.service.AppointmentService;
 import com.bikash.cs.dentalsurgeryms.service.PatientService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +32,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientMapper patientMapper;
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+    private final AppointmentService appointmentService;
 
 
     @Override
@@ -130,9 +135,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Transactional
     public void deletePatient(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient with email '" + email + "' not found"));
+        if(appointmentService.hasAppointmentsForPatientAndStatusNot(patient, AppointmentStatus.CANCELLED)){
+            throw new ADSIllegalStateException("Cannot delete patient with email '" + email + "' as it has appointments.");
+        }
         patientRepository.delete(patient);
     }
 }

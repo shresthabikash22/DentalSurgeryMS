@@ -3,6 +3,8 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.DentistRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
+import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
+import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
 import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
 import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.DentistMapper;
@@ -10,6 +12,7 @@ import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.User;
 import com.bikash.cs.dentalsurgeryms.repository.DentistRepository;
 import com.bikash.cs.dentalsurgeryms.repository.UserRepository;
+import com.bikash.cs.dentalsurgeryms.service.AppointmentService;
 import com.bikash.cs.dentalsurgeryms.service.DentistService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class DentistServiceImpl implements DentistService {
     private final DentistRepository dentistRepository;
     private final DentistMapper dentistMapper;
     private final UserRepository userRepository;
+    private final AppointmentService appointmentService;
 
     @Override
     public DentistResponseDto createDentist(@Valid DentistRequestDto dentistRequestDto) {
@@ -99,6 +103,9 @@ public class DentistServiceImpl implements DentistService {
     public void deleteDentist(String email) {
         Dentist dentist = dentistRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Dentist with email '" + email + "' not found"));
+        if(appointmentService.hasAppointmentsForDentistAndStatusNot(dentist, AppointmentStatus.CANCELLED)){
+            throw new ADSIllegalStateException("Dentist has appointments in the future. Cannot delete.");
+        }
         dentistRepository.delete(dentist);
     }
 }

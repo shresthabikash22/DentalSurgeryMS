@@ -10,7 +10,6 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.Named;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)

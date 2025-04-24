@@ -2,9 +2,9 @@ package com.bikash.cs.dentalsurgeryms.mapper;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.DentistBasicResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.PatientBasicResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryBasicResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
 import com.bikash.cs.dentalsurgeryms.model.Appointment;
 import com.bikash.cs.dentalsurgeryms.model.Dentist;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-24T03:41:43-0500",
+    date = "2025-04-24T11:30:44-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -56,21 +56,21 @@ public class AppointmentMapperImpl implements AppointmentMapper {
             return null;
         }
 
+        AppointmentStatus status = null;
+        PatientBasicResponseDto patientBasicResponseDto = null;
+        DentistBasicResponseDto dentistBasicResponseDto = null;
+        SurgeryBasicResponseDto surgeryBasicResponseDto = null;
         Long id = null;
         LocalDateTime appointmentDateTime = null;
-        AppointmentStatus status = null;
-        PatientResponseDto patient = null;
-        DentistResponseDto dentist = null;
-        SurgeryResponseDto surgery = null;
 
+        status = appointment.getStatus();
+        patientBasicResponseDto = patientMapper.patientToPatientBasicResponseDto( appointment.getPatient() );
+        dentistBasicResponseDto = dentistMapper.dentistToDentistBasicResponseDto( appointment.getDentist() );
+        surgeryBasicResponseDto = surgeryMapper.surgeryToSurgeryBasicResponseDto( appointment.getSurgery() );
         id = appointment.getId();
         appointmentDateTime = appointment.getAppointmentDateTime();
-        status = appointment.getStatus();
-        patient = patientMapper.patientToPatientResponseDto( appointment.getPatient() );
-        dentist = dentistMapper.dentistToDentistResponseDto( appointment.getDentist() );
-        surgery = surgeryMapper.surgeryToSurgeryResponseDto( appointment.getSurgery() );
 
-        AppointmentResponseDto appointmentResponseDto = new AppointmentResponseDto( id, appointmentDateTime, status, patient, dentist, surgery );
+        AppointmentResponseDto appointmentResponseDto = new AppointmentResponseDto( id, appointmentDateTime, status, patientBasicResponseDto, dentistBasicResponseDto, surgeryBasicResponseDto );
 
         return appointmentResponseDto;
     }

@@ -9,8 +9,8 @@ public record AppointmentResponseDto(
         Long id,
         LocalDateTime appointmentDateTime,
         AppointmentStatus status,
-        PatientResponseDto patient,
-        DentistResponseDto dentist,
-        SurgeryResponseDto surgery
+        PatientBasicResponseDto patientBasicResponseDto,
+        DentistBasicResponseDto dentistBasicResponseDto,
+        SurgeryBasicResponseDto surgeryBasicResponseDto
 ) {
 }

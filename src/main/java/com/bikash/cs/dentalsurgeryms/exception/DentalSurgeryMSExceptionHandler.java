@@ -1,6 +1,7 @@
 package com.bikash.cs.dentalsurgeryms.exception;
 
 import com.bikash.cs.dentalsurgeryms.exception.general.*;
+import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
 import com.bikash.cs.dentalsurgeryms.exception.role.InvalidRoleException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -49,5 +50,10 @@ public class DentalSurgeryMSExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(ADSIllegalStateException.class)
+    public ResponseEntity<ApiError> handleADSIllegalStateException(ADSIllegalStateException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT.value(), Instant.now());
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
 
 }

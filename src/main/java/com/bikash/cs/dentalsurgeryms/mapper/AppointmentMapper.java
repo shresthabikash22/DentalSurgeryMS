@@ -17,6 +17,10 @@ public interface AppointmentMapper {
     @Mapping(target = "surgery.id", source = "surgeryId")
     Appointment appointmentRequestDtoToAppointment(AppointmentRequestDto appointmentRequestDto);
 
+    @Mapping(source = "status",target = "status")
+    @Mapping(source = "patient", target = "patientBasicResponseDto")
+    @Mapping(source = "dentist", target = "dentistBasicResponseDto")
+    @Mapping(source = "surgery", target = "surgeryBasicResponseDto")
     AppointmentResponseDto appointmentToAppointmentResponseDto(Appointment appointment);
 
     List<AppointmentResponseDto> appointmentsToAppointmentResponseDtos(List<Appointment> appointments);

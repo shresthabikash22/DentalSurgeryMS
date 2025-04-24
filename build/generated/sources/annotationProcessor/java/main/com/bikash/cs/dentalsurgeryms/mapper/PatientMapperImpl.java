@@ -3,14 +3,13 @@ package com.bikash.cs.dentalsurgeryms.mapper;
 import com.bikash.cs.dentalsurgeryms.dto.request.PatientRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.AddressResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.DentistBasicResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.PatientBasicResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryResponseDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryBasicResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
 import com.bikash.cs.dentalsurgeryms.model.Appointment;
-import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.Patient;
-import com.bikash.cs.dentalsurgeryms.model.Surgery;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-24T03:32:32-0500",
+    date = "2025-04-24T11:27:07-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -111,8 +110,9 @@ public class PatientMapperImpl implements PatientMapper {
         patient.setAddress( addressMapper.addressRequestDtoToAddress( patientRequestDto.address() ) );
     }
 
-    protected DentistResponseDto dentistToDentistResponseDto(Dentist dentist) {
-        if ( dentist == null ) {
+    @Override
+    public PatientBasicResponseDto patientToPatientBasicResponseDto(Patient patient) {
+        if ( patient == null ) {
             return null;
         }
 
@@ -121,40 +121,16 @@ public class PatientMapperImpl implements PatientMapper {
         String lastName = null;
         String phoneNumber = null;
         String email = null;
-        String specialization = null;
-        List<AppointmentResponseDto> appointments = null;
 
-        id = dentist.getId();
-        firstName = dentist.getFirstName();
-        lastName = dentist.getLastName();
-        phoneNumber = dentist.getPhoneNumber();
-        email = dentist.getEmail();
-        specialization = dentist.getSpecialization();
-        appointments = appointmentListToAppointmentResponseDtoList( dentist.getAppointments() );
+        id = patient.getId();
+        firstName = patient.getFirstName();
+        lastName = patient.getLastName();
+        phoneNumber = patient.getPhoneNumber();
+        email = patient.getEmail();
 
-        DentistResponseDto dentistResponseDto = new DentistResponseDto( id, firstName, lastName, phoneNumber, email, specialization, appointments );
+        PatientBasicResponseDto patientBasicResponseDto = new PatientBasicResponseDto( id, firstName, lastName, phoneNumber, email );
 
-        return dentistResponseDto;
-    }
-
-    protected SurgeryResponseDto surgeryToSurgeryResponseDto(Surgery surgery) {
-        if ( surgery == null ) {
-            return null;
-        }
-
-        String branchCode = null;
-        String phoneNumber = null;
-
-        branchCode = surgery.getBranchCode();
-        phoneNumber = surgery.getPhoneNumber();
-
-        Long surgeryId = null;
-        String name = null;
-        AddressResponseDto addressResponseDto = null;
-
-        SurgeryResponseDto surgeryResponseDto = new SurgeryResponseDto( surgeryId, branchCode, name, phoneNumber, addressResponseDto );
-
-        return surgeryResponseDto;
+        return patientBasicResponseDto;
     }
 
     protected AppointmentResponseDto appointmentToAppointmentResponseDto(Appointment appointment) {
@@ -165,18 +141,16 @@ public class PatientMapperImpl implements PatientMapper {
         Long id = null;
         LocalDateTime appointmentDateTime = null;
         AppointmentStatus status = null;
-        PatientResponseDto patient = null;
-        DentistResponseDto dentist = null;
-        SurgeryResponseDto surgery = null;
 
         id = appointment.getId();
         appointmentDateTime = appointment.getAppointmentDateTime();
         status = appointment.getStatus();
-        patient = patientToPatientResponseDto( appointment.getPatient() );
-        dentist = dentistToDentistResponseDto( appointment.getDentist() );
-        surgery = surgeryToSurgeryResponseDto( appointment.getSurgery() );
 
-        AppointmentResponseDto appointmentResponseDto = new AppointmentResponseDto( id, appointmentDateTime, status, patient, dentist, surgery );
+        PatientBasicResponseDto patientBasicResponseDto = null;
+        DentistBasicResponseDto dentistBasicResponseDto = null;
+        SurgeryBasicResponseDto surgeryBasicResponseDto = null;
+
+        AppointmentResponseDto appointmentResponseDto = new AppointmentResponseDto( id, appointmentDateTime, status, patientBasicResponseDto, dentistBasicResponseDto, surgeryBasicResponseDto );
 
         return appointmentResponseDto;
     }

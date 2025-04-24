@@ -2,7 +2,6 @@ package com.bikash.cs.dentalsurgeryms.controller;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
 import com.bikash.cs.dentalsurgeryms.service.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,8 @@ public class AppointmentController {
         AppointmentResponseDto appointmentResponseDto = appointmentService.createAppointment(appointmentRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentResponseDto);
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentResponseDto> getAppointmentById(@PathVariable Long id) {

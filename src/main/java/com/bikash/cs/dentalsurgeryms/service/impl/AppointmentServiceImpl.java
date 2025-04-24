@@ -65,6 +65,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStatus(AppointmentStatus.SCHEDULED);
         appointment.setAppointmentDateTime(LocalDateTime.now());
 
+        patient.getAppointments().add(appointment);
+        dentist.getAppointments().add(appointment);
+
+        patientRepository.save(patient);
+        dentistRepository.save(dentist);
+
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
         return appointmentMapper.appointmentToAppointmentResponseDto(savedAppointment);
@@ -166,4 +172,20 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment with ID " + id + " not found"));
         appointmentRepository.delete(appointment);
     }
+
+    @Override
+    public boolean hasAppointmentsForSurgery(Long surgeryId) {
+        return appointmentRepository.existsBySurgery_Id(surgeryId);
+    }
+
+    @Override
+    public boolean hasAppointmentsForDentistAndStatusNot(Dentist dentist, AppointmentStatus status) {
+        return appointmentRepository.existsByDentistAndStatusNot(dentist, status);
+    }
+
+    @Override
+    public boolean hasAppointmentsForPatientAndStatusNot(Patient patient, AppointmentStatus status) {
+        return appointmentRepository.existsByPatientAndStatusNot(patient, status);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.bikash.cs.dentalsurgeryms.mapper;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.PatientRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.PatientBasicResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
 import com.bikash.cs.dentalsurgeryms.model.Patient;
 import org.mapstruct.Mapper;
@@ -16,4 +17,5 @@ public interface PatientMapper {
     PatientResponseDto patientToPatientResponseDto(Patient patient);
     List<PatientResponseDto> patientToPatientResponseDtoPage(List<Patient> patients);
     void updatePatientFromPatientRequestDto(PatientRequestDto patientRequestDto, @MappingTarget Patient patient);
+    PatientBasicResponseDto patientToPatientBasicResponseDto(Patient patient);
 }

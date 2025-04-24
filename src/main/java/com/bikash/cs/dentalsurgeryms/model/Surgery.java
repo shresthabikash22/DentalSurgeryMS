@@ -41,10 +41,27 @@ public class Surgery {
     @NotNull(message = "Address is required")
     private Address address;
 
+    @OneToMany(mappedBy = "surgery", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments = new ArrayList<>();
+
     public Surgery(String surgeryName, String branchCode, String phoneNumber, Address address) {
         this.surgeryName = surgeryName;
         this.branchCode = branchCode;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public void addAppointment(Appointment appointment) {
+        if (appointment != null) {
+            appointments.add(appointment);
+            appointment.setSurgery(this);
+        }
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        if (appointment != null) {
+            appointments.remove(appointment);
+            appointment.setSurgery(null);
+        }
     }
 }

@@ -1,12 +1,13 @@
 package com.bikash.cs.dentalsurgeryms.mapper;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.SurgeryRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryBasicResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryResponseDto;
+import com.bikash.cs.dentalsurgeryms.model.Address;
 import com.bikash.cs.dentalsurgeryms.model.Surgery;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -27,4 +28,13 @@ public interface SurgeryMapper {
     @Mapping(source = "phoneNumber", target = "phoneNumber")
     @Mapping(source = "address", target = "addressResponseDto")
     List<SurgeryResponseDto> surgeryToSurgeryResponseDto(List<Surgery> surgeries);
+
+    @Mapping(source = "surgeryName", target = "name")
+    @Mapping(target = "location", expression = "java(surgery.getAddress() != null ? formatAddress(surgery.getAddress()) : null)")
+    SurgeryBasicResponseDto surgeryToSurgeryBasicResponseDto(Surgery surgery);
+
+    default String formatAddress(Address address) {
+        return address.getStreet() + ", " + address.getCity() + ", " + address.getZipCode();
+    }
+
 }

@@ -58,5 +58,10 @@ public class GlobalExceptionHandler {
         ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT.value(), Instant.now());
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.FORBIDDEN.value(), Instant.now());
+        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
+    }
 
 }

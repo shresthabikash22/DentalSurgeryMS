@@ -1,5 +1,6 @@
 package com.bikash.cs.dentalsurgeryms.config;
 
+import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ public class ApplicationConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new ResourceNotFoundException("User with username " + username + " not found"));
     }
 
     @Bean

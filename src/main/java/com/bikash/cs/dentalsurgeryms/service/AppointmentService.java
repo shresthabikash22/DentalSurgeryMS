@@ -2,10 +2,12 @@ package com.bikash.cs.dentalsurgeryms.service;
 
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
 import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.Patient;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface AppointmentService {
     com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto createAppointment(AppointmentRequestDto appointmentResponseDto);

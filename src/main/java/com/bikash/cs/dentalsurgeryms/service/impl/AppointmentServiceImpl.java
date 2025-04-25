@@ -1,6 +1,7 @@
 package com.bikash.cs.dentalsurgeryms.service.impl;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
 import com.bikash.cs.dentalsurgeryms.exception.InvalidOperationException;
 import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,7 +58,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setDentist(dentist);
         appointment.setPatient(patient);
         appointment.setSurgery(surgery);
-        appointment.setStatus(AppointmentStatus.SCHEDULED);
+        appointment.setStatus(AppointmentStatus.REQUESTED);
         appointment.setAppointmentDateTime(LocalDateTime.now());
 
         patient.getAppointments().add(appointment);
@@ -181,8 +183,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public boolean hasAppointmentsForPatientAndStatusNot(Patient patient, AppointmentStatus status) {
         return appointmentRepository.existsByPatientAndStatusNot(patient, status);
     }
-
-
 
 
 }

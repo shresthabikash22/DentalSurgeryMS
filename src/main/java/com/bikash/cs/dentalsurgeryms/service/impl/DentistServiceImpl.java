@@ -2,12 +2,17 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 
 
 import com.bikash.cs.dentalsurgeryms.dto.request.DentistRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
+import com.bikash.cs.dentalsurgeryms.enums.Role;
 import com.bikash.cs.dentalsurgeryms.exception.ADSIllegalStateException;
+import com.bikash.cs.dentalsurgeryms.exception.AccessDeniedException;
 import com.bikash.cs.dentalsurgeryms.exception.DuplicateResourceException;
 import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
+import com.bikash.cs.dentalsurgeryms.mapper.AppointmentMapper;
 import com.bikash.cs.dentalsurgeryms.mapper.DentistMapper;
+import com.bikash.cs.dentalsurgeryms.model.Appointment;
 import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.User;
 import com.bikash.cs.dentalsurgeryms.repository.DentistRepository;
@@ -20,8 +25,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +38,7 @@ public class DentistServiceImpl implements DentistService {
     private final DentistMapper dentistMapper;
     private final UserRepository userRepository;
     private final AppointmentService appointmentService;
+    private final AppointmentMapper appointmentMapper;
 
     @Override
     public DentistResponseDto createDentist(@Valid DentistRequestDto dentistRequestDto) {
@@ -92,12 +100,31 @@ public class DentistServiceImpl implements DentistService {
     }
 
     @Override
-    public void deleteDentist(Long id) {
+    public void deleteDentist(Long id, Role role) {
         Dentist dentist = dentistRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Dentist with id '" + id + "' not found"));
-        if (appointmentService.hasAppointmentsForDentistAndStatusNot(dentist, AppointmentStatus.CANCELLED)) {
-            throw new ADSIllegalStateException("Dentist has appointments in the future. Cannot delete.");
+        if(role == Role.DENTIST){
+            if (appointmentService.hasAppointmentsForDentistAndStatusNot(dentist, AppointmentStatus.CANCELLED)) {
+                throw new ADSIllegalStateException("Dentist has appointments in the future. Cannot delete.");
+            }
+            dentistRepository.delete(dentist);
         }
-        dentistRepository.delete(dentist);
+        else{
+            dentist.getUser().removeRole(Role.MANAGER);
+            dentistRepository.save(dentist);
+        }
+
     }
+
+//    @Override
+    public Page<AppointmentResponseDto> getAppointmentsByDentist(Long dentistId, UserDetails userDetails, int page, int pageSize, String sortDirection, String sortBy) {
+        User dentistUser = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("Dentist not found with username: " + userDetails.getUsername()));
+        if (! dentistUser.getUsername().equals(userDetails.getUsername()) ){
+            throw new AccessDeniedException("Unauthorized access to appointments");
+        }
+        Page<AppointmentResponseDto> appointments = appointmentService.getAppointmentsByDentistId(dentistId, page,pageSize, sortDirection, sortBy);
+        return appointments;
+    }
+
 }

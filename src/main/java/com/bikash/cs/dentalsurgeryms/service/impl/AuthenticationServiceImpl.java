@@ -6,15 +6,19 @@ import com.bikash.cs.dentalsurgeryms.dto.response.AuthenticationResponse;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.Role;
+import com.bikash.cs.dentalsurgeryms.exception.DuplicateResourceException;
 import com.bikash.cs.dentalsurgeryms.mapper.UserMapper;
 import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.User;
+import com.bikash.cs.dentalsurgeryms.repository.DentistRepository;
+import com.bikash.cs.dentalsurgeryms.repository.PatientRepository;
 import com.bikash.cs.dentalsurgeryms.repository.UserRepository;
 import com.bikash.cs.dentalsurgeryms.service.AuthenticationService;
 import com.bikash.cs.dentalsurgeryms.service.DentistService;
 import com.bikash.cs.dentalsurgeryms.service.PatientService;
 import com.bikash.cs.dentalsurgeryms.service.UserService;
 import io.jsonwebtoken.Claims;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +32,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -37,6 +42,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
     private final PatientService patientService;
     private final UserService userService;
+    private final PatientRepository patientRepository;
+    private final DentistRepository dentistRepository;
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequestDto authenticationRequest) {
@@ -62,6 +69,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Role role = registerRequestDto.role();
         user.addRole(role);
       // save it in db
+        if(userRepository.findByUsername(user.getUsername()).isPresent()){
+            throw new DuplicateResourceException("Username '" + user.getUsername() + "' is already taken");
+        }
+        if(patientRepository.findByEmail(registerRequestDto.email()).isPresent() ||
+                dentistRepository.findByEmail(registerRequestDto.email()).isPresent()
+        ){
+            throw new DuplicateResourceException("Email '" + registerRequestDto.email() + "' is already taken");
+        }
         User registeredUser = userRepository.save(user);
         String token = jwtService.generateToken(registeredUser);
 
@@ -95,10 +110,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                             registeredUser.getUserId()
                     ));
         }
-
-
-        // generate token for this user object
-
         return new AuthenticationResponse(token);
     }
 }

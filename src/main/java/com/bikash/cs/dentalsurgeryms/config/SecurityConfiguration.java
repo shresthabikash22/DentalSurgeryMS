@@ -24,29 +24,35 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(CsrfConfigurer::disable)
-                .authorizeHttpRequests(
-                        req -> req
-                                .requestMatchers("/api/v1/auth/*").permitAll()
-                                .requestMatchers("/api/v1/surgeries").hasRole(Role.MANAGER.name())
-                                .requestMatchers("/api/v1/surgeries/*").hasRole(Role.MANAGER.name())
-                                .requestMatchers(HttpMethod.GET, "/api/v1/surgeries/{branchCode}").hasAnyRole(Role.MANAGER.name(), Role.DENTIST.name()) // Or whichever roles are appropriate
-                                .requestMatchers("/api/v1/appointments").hasRole(Role.MANAGER.name())
-                                .requestMatchers(HttpMethod.GET,"/api/v1/appointments/{id}").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name(),Role.DENTIST.name())
-                                .requestMatchers("/api/v1/appointments/{id}").hasAnyRole(Role.MANAGER.name())
-                                .requestMatchers("/api/v1/appointments/{id}/cancel").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
-                                .requestMatchers("/api/v1/patients").hasRole(Role.MANAGER.name())
-                                .requestMatchers("/api/v1/patients/{id}").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
-                                .requestMatchers("/api/v1/dentists").hasRole(Role.MANAGER.name())
-                                .requestMatchers("/api/v1/dentists/{id}").hasAnyRole(Role.DENTIST.name(), Role.MANAGER.name())
-                                .requestMatchers("/api/v1/dentists/*").hasAnyRole( Role.MANAGER.name())
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/api/v1/auth/*").permitAll()
+                        .requestMatchers("/api/v1/surgeries").hasRole(Role.MANAGER.name())
+                        .requestMatchers("/api/v1/surgeries/*").hasRole(Role.MANAGER.name())
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/appointments").hasAnyRole(Role.MANAGER.name(), Role.PATIENT.name())
+                        .requestMatchers("/api/v1/appointments/{id}/cancel").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
+                        .requestMatchers("/api/v1/appointments/patient/{id}").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
+                        .requestMatchers("/api/v1/appointments/dentist/{id}").hasAnyRole(Role.DENTIST.name(), Role.MANAGER.name())
+                        .requestMatchers("/api/v1/appointments").hasRole(Role.MANAGER.name())
+                        .requestMatchers("/api/v1/appointments/*").hasRole(Role.MANAGER.name())
+
+                        .requestMatchers(HttpMethod.GET,"/api/v1/patients").hasRole(Role.MANAGER.name())
+                        .requestMatchers("/api/v1/patients/{id}/appointments").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
+                        .requestMatchers("/api/v1/patients/{id}").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
+
+                        .requestMatchers(HttpMethod.POST,"/api/v1/dentists").hasRole(Role.PATIENT.name())
+                        .requestMatchers(HttpMethod.GET,"/api/v1/dentists").hasRole(Role.MANAGER.name())
+                        .requestMatchers( "/api/v1/dentists/{id}/appointments").hasAnyRole(Role.DENTIST.name(), Role.MANAGER.name())
+                        .requestMatchers("/api/v1/dentists/{id}").hasAnyRole(Role.DENTIST.name(), Role.MANAGER.name())
+
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
-                .sessionManagement(
-                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
+
+
     }
 
 }

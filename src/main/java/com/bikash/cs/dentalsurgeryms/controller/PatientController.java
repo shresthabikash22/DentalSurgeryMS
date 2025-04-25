@@ -25,9 +25,9 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPatient);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<PatientResponseDto> getPatientByEmail(@PathVariable String email) {
-        PatientResponseDto patient = patientService.getPatientByEmail(email);
+    @GetMapping("/{id}")
+    public ResponseEntity<PatientResponseDto> getPatientById(@PathVariable Long id) {
+        PatientResponseDto patient = patientService.getPatientById(id);
         return ResponseEntity.status(HttpStatus.OK).body(patient);
     }
 
@@ -44,15 +44,15 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<PatientResponseDto> updatePatient(@PathVariable String email, @Valid @RequestBody PatientRequestDto surgeryRequestDto) {
-        PatientResponseDto  patientResponseDto = patientService.updatePatient(email, surgeryRequestDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientResponseDto> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientRequestDto surgeryRequestDto) {
+        PatientResponseDto  patientResponseDto = patientService.updatePatient(id, surgeryRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(patientResponseDto);
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<PatientResponseDto> deletePatient(@PathVariable String email) {
-        patientService.deletePatient(email);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PatientResponseDto> deletePatient(@PathVariable Long id) {
+        patientService.deletePatient(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     

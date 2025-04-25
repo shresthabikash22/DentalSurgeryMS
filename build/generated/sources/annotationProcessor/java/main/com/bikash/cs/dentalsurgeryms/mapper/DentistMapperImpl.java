@@ -13,19 +13,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-24T11:27:07-0500",
+    date = "2025-04-25T03:22:09-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
 public class DentistMapperImpl implements DentistMapper {
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Override
     public Dentist dentistRequestDtoToDentist(DentistRequestDto dentistRequestDto) {
@@ -40,7 +36,6 @@ public class DentistMapperImpl implements DentistMapper {
         dentist.setPhoneNumber( dentistRequestDto.phoneNumber() );
         dentist.setEmail( dentistRequestDto.email() );
         dentist.setSpecialization( dentistRequestDto.specialization() );
-        dentist.setUser( userMapper.userRequestDtoToUser( dentistRequestDto.user() ) );
 
         return dentist;
     }
@@ -97,7 +92,6 @@ public class DentistMapperImpl implements DentistMapper {
         dentist.setPhoneNumber( dentistRequestDto.phoneNumber() );
         dentist.setEmail( dentistRequestDto.email() );
         dentist.setSpecialization( dentistRequestDto.specialization() );
-        dentist.setUser( userMapper.userRequestDtoToUser( dentistRequestDto.user() ) );
     }
 
     @Override

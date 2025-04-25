@@ -25,9 +25,9 @@ public class DentistController {
     }
 
 
-    @GetMapping("/{email}")
-    public ResponseEntity<DentistResponseDto> getDentistByEmail(@PathVariable String email) {
-        DentistResponseDto dentist = dentistService.getDentistByEmail(email);
+    @GetMapping("/{id}")
+    public ResponseEntity<DentistResponseDto> getDentistById(@PathVariable Long id) {
+        DentistResponseDto dentist = dentistService.getDentistById(id);
         return ResponseEntity.status(HttpStatus.OK).body(dentist);
     }
 
@@ -44,15 +44,15 @@ public class DentistController {
         return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<DentistResponseDto> updateDentist(@PathVariable String email, @Valid @RequestBody DentistRequestDto dentistRequestDto) {
-        DentistResponseDto  dentistResponseDto = dentistService.updateDentist(email, dentistRequestDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<DentistResponseDto> updateDentist(@PathVariable Long id, @Valid @RequestBody DentistRequestDto dentistRequestDto) {
+        DentistResponseDto  dentistResponseDto = dentistService.updateDentist(id, dentistRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(dentistResponseDto);
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<DentistResponseDto> deleteDentist(@PathVariable String email) {
-        dentistService.deleteDentist(email);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DentistResponseDto> deleteDentist(@PathVariable Long id) {
+        dentistService.deleteDentist(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

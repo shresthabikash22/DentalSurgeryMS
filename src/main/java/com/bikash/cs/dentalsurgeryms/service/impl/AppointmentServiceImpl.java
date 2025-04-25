@@ -1,19 +1,12 @@
 package com.bikash.cs.dentalsurgeryms.service.impl;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
-import com.bikash.cs.dentalsurgeryms.exception.general.InvalidOperationException;
-import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
+import com.bikash.cs.dentalsurgeryms.exception.InvalidOperationException;
+import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.AppointmentMapper;
-import com.bikash.cs.dentalsurgeryms.model.Appointment;
-import com.bikash.cs.dentalsurgeryms.model.Dentist;
-import com.bikash.cs.dentalsurgeryms.model.Patient;
-import com.bikash.cs.dentalsurgeryms.model.Surgery;
-import com.bikash.cs.dentalsurgeryms.repository.AppointmentRepository;
-import com.bikash.cs.dentalsurgeryms.repository.DentistRepository;
-import com.bikash.cs.dentalsurgeryms.repository.PatientRepository;
-import com.bikash.cs.dentalsurgeryms.repository.SurgeryRepository;
+import com.bikash.cs.dentalsurgeryms.model.*;
+import com.bikash.cs.dentalsurgeryms.repository.*;
 import com.bikash.cs.dentalsurgeryms.service.AppointmentService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -35,19 +28,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final DentistRepository dentistRepository;
     private final SurgeryRepository surgeryRepository;
     private final AppointmentMapper appointmentMapper;
+    private final UserRepository userRepository;
 //    private final EmailService emailService;
 
     @Override
-    public AppointmentResponseDto createAppointment(@Valid AppointmentRequestDto appointmentRequestDto) {
-        Patient patient = patientRepository.findById(appointmentRequestDto.patientId())
-                .orElseThrow(() -> new ResourceNotFoundException("Patient with ID " + appointmentRequestDto.patientId() + " not found"));
+    public com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto createAppointment(@Valid AppointmentRequestDto appointmentResponseDto) {
+        Patient patient = patientRepository.findById(appointmentResponseDto.patientId())
+                .orElseThrow(() -> new ResourceNotFoundException("Patient with ID " + appointmentResponseDto.patientId() + " not found"));
         if (patient.isHasUnpaidBill()) {
             throw new InvalidOperationException("Patient has unpaid bill. Cannot create appointment");
         }
-        Dentist dentist = dentistRepository.findById(appointmentRequestDto.dentistId())
-                .orElseThrow(() -> new ResourceNotFoundException("Dentist with ID " + appointmentRequestDto.dentistId() + " not found"));
+        Dentist dentist = dentistRepository.findById(appointmentResponseDto.dentistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Dentist with ID " + appointmentResponseDto.dentistId() + " not found"));
 
-        LocalDateTime startOfWeek = appointmentRequestDto.appointmentDateTime().truncatedTo(ChronoUnit.DAYS)
+        LocalDateTime startOfWeek = appointmentResponseDto.appointmentDateTime().truncatedTo(ChronoUnit.DAYS)
                 .with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
         LocalDateTime endOfWeek = startOfWeek.plusDays(7);
         long appointmentCount = appointmentRepository.findByDentistIdAndAppointmentDateTimeBetweenAndStatus(
@@ -55,10 +49,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (appointmentCount >= 5) {
             throw new InvalidOperationException("Dentist cannot have more then 5 appointments in a week");
         }
-        Surgery surgery = surgeryRepository.findById(appointmentRequestDto.surgeryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Surgery with ID " + appointmentRequestDto.surgeryId() + " not found"));
+        Surgery surgery = surgeryRepository.findById(appointmentResponseDto.surgeryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Surgery with ID " + appointmentResponseDto.surgeryId() + " not found"));
 
-        Appointment appointment = appointmentMapper.appointmentRequestDtoToAppointment(appointmentRequestDto);
+        Appointment appointment = appointmentMapper.appointmentRequestDtoToAppointment(appointmentResponseDto);
         appointment.setDentist(dentist);
         appointment.setPatient(patient);
         appointment.setSurgery(surgery);
@@ -78,14 +72,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentResponseDto getAppointmentById(Long id) {
+    public com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto getAppointmentById(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment with ID " + id + " not found"));
         return appointmentMapper.appointmentToAppointmentResponseDto(appointment);
     }
 
     @Override
-    public Page<AppointmentResponseDto> getAppointmentsByPatientId(Long patientId, int page, int pageSize, String sortDirection, String sortBy) {
+    public Page<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> getAppointmentsByPatientId(Long patientId, int page, int pageSize, String sortDirection, String sortBy) {
         if (!patientRepository.findById(patientId).isPresent()) {
             throw new ResourceNotFoundException("Patient with ID " + patientId + " not found");
         }
@@ -100,7 +94,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Page<AppointmentResponseDto> getAppointmentsByDentistId(Long dentistId, int page, int pageSize, String sortDirection, String sortBy) {
+    public Page<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> getAppointmentsByDentistId(Long dentistId, int page, int pageSize, String sortDirection, String sortBy) {
         if (!dentistRepository.findById(dentistId).isPresent()) {
             throw new ResourceNotFoundException("Dentist with ID " + dentistId + " not found");
         }
@@ -115,7 +109,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentResponseDto cancelAppointment(Long id) {
+    public com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto cancelAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment with ID " + id + " not found"));
         if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
@@ -129,19 +123,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public AppointmentResponseDto updateAppointment(Long id, @Valid AppointmentRequestDto appointmentRequestDto) {
+    public com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto updateAppointment(Long id, @Valid AppointmentRequestDto appointmentResponseDto) {
         Appointment existingAppointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment with ID " + id + " not found"));
-        Patient patient = patientRepository.findById(appointmentRequestDto.patientId())
-                .orElseThrow(() -> new ResourceNotFoundException("Patient with ID " + appointmentRequestDto.patientId() + " not found"));
+        Patient patient = patientRepository.findById(appointmentResponseDto.patientId())
+                .orElseThrow(() -> new ResourceNotFoundException("Patient with ID " + appointmentResponseDto.patientId() + " not found"));
         if (patient.isHasUnpaidBill()) {
             throw new InvalidOperationException("Patient has unpaid bill. Cannot update appointment");
         }
-        Dentist dentist = dentistRepository.findById(appointmentRequestDto.dentistId())
-                .orElseThrow(() -> new ResourceNotFoundException("Dentist with ID " + appointmentRequestDto.dentistId() + " not found"));
-        Surgery surgery = surgeryRepository.findById(appointmentRequestDto.surgeryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Survey with ID " + appointmentRequestDto.surgeryId() + " not found"));
-        LocalDateTime startOfWeek = appointmentRequestDto.appointmentDateTime().truncatedTo(ChronoUnit.DAYS)
+        Dentist dentist = dentistRepository.findById(appointmentResponseDto.dentistId())
+                .orElseThrow(() -> new ResourceNotFoundException("Dentist with ID " + appointmentResponseDto.dentistId() + " not found"));
+        Surgery surgery = surgeryRepository.findById(appointmentResponseDto.surgeryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Survey with ID " + appointmentResponseDto.surgeryId() + " not found"));
+        LocalDateTime startOfWeek = appointmentResponseDto.appointmentDateTime().truncatedTo(ChronoUnit.DAYS)
                 .with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
         LocalDateTime endOfWeek = startOfWeek.plusDays(7);
         long appointmentCount = appointmentRepository.findByDentistIdAndAppointmentDateTimeBetweenAndStatus(
@@ -151,11 +145,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new InvalidOperationException("Dentist cannot have more than 5 appointments in a week");
         }
 
-        existingAppointment.setAppointmentDateTime(appointmentRequestDto.appointmentDateTime());
+        existingAppointment.setAppointmentDateTime(appointmentResponseDto.appointmentDateTime());
         existingAppointment.setPatient(patient);
         existingAppointment.setDentist(dentist);
         existingAppointment.setSurgery(surgery);
-        existingAppointment.setStatus(appointmentRequestDto.status());
+        existingAppointment.setStatus(appointmentResponseDto.status());
         Appointment savedAppointment = appointmentRepository.save(existingAppointment);
 //        try {
 //            emailService.sendAppointmentNotification(savedAppointment);
@@ -187,5 +181,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     public boolean hasAppointmentsForPatientAndStatusNot(Patient patient, AppointmentStatus status) {
         return appointmentRepository.existsByPatientAndStatusNot(patient, status);
     }
+
+
+
 
 }

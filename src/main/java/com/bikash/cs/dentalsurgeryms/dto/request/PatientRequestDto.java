@@ -31,8 +31,6 @@ public record PatientRequestDto(
         @NotNull(message = "Address cannot be null")
         AddressRequestDto address,
 
-        @Valid
-        @NotNull(message = "User credentials cannot be null")
-        UserRequestDto user
+       Long userId
 ) {
 }

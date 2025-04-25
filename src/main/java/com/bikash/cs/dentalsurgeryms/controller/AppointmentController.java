@@ -1,7 +1,6 @@
 package com.bikash.cs.dentalsurgeryms.controller;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.AppointmentRequestDto;
-import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
 import com.bikash.cs.dentalsurgeryms.service.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,61 +19,61 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<AppointmentResponseDto> createAppointment(@Valid @RequestBody  AppointmentRequestDto appointmentRequestDto) {
-        AppointmentResponseDto appointmentResponseDto = appointmentService.createAppointment(appointmentRequestDto);
+    public ResponseEntity<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> createAppointment(@Valid @RequestBody AppointmentRequestDto appointmentCreateDto) {
+        com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto appointmentResponseDto = appointmentService.createAppointment(appointmentCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentResponseDto);
     }
 
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentResponseDto> getAppointmentById(@PathVariable Long id) {
-        AppointmentResponseDto appointmentResponseDto = appointmentService.getAppointmentById(id);
+    public ResponseEntity<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> getAppointmentById(@PathVariable Long id) {
+        com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto appointmentResponseDto = appointmentService.getAppointmentById(id);
         return ResponseEntity.status(HttpStatus.OK).body(appointmentResponseDto);
     }
 
     @GetMapping("/patient/{patientId}")
-    public ResponseEntity<PagedModel<EntityModel<AppointmentResponseDto>>> getAppointmentsByPatientId(
+    public ResponseEntity<PagedModel<EntityModel<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto>>> getAppointmentsByPatientId(
             @PathVariable Long patientId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
-            PagedResourcesAssembler<AppointmentResponseDto> pagedResourcesAssembler
+            PagedResourcesAssembler<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> pagedResourcesAssembler
             ){
-        Page<AppointmentResponseDto> appointmentsPage = appointmentService.getAppointmentsByPatientId(patientId, page, pageSize,  sortDirection,sortBy);
-        PagedModel<EntityModel<AppointmentResponseDto>> pagedModel = pagedResourcesAssembler.toModel(appointmentsPage);
+        Page<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> appointmentsPage = appointmentService.getAppointmentsByPatientId(patientId, page, pageSize,  sortDirection,sortBy);
+        PagedModel<EntityModel<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto>> pagedModel = pagedResourcesAssembler.toModel(appointmentsPage);
         return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
     @GetMapping("/dentist/{dentistId}")
-    public ResponseEntity<PagedModel<EntityModel<AppointmentResponseDto>>> getAppointmentsByDentistId(
+    public ResponseEntity<PagedModel<EntityModel<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto>>> getAppointmentsByDentistId(
             @PathVariable Long dentistId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
-            PagedResourcesAssembler<AppointmentResponseDto> pagedResourcesAssembler
+            PagedResourcesAssembler<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> pagedResourcesAssembler
     ){
-        Page<AppointmentResponseDto> appointmentsPage = appointmentService.getAppointmentsByDentistId(dentistId, page, pageSize,  sortDirection,sortBy);
-        PagedModel<EntityModel<AppointmentResponseDto>> pagedModel = pagedResourcesAssembler.toModel(appointmentsPage);
+        Page<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> appointmentsPage = appointmentService.getAppointmentsByDentistId(dentistId, page, pageSize,  sortDirection,sortBy);
+        PagedModel<EntityModel<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto>> pagedModel = pagedResourcesAssembler.toModel(appointmentsPage);
         return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
     @PutMapping("/{id}/cancel")
-    public ResponseEntity<AppointmentResponseDto> cancelAppointment(@PathVariable Long id) {
-        AppointmentResponseDto appointmentResponseDto = appointmentService.cancelAppointment(id);
+    public ResponseEntity<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> cancelAppointment(@PathVariable Long id) {
+        com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto appointmentResponseDto = appointmentService.cancelAppointment(id);
         return ResponseEntity.status(HttpStatus.OK).body(appointmentResponseDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
-        AppointmentResponseDto appointmentResponseDto = appointmentService.updateAppointment(id, appointmentRequestDto);
+    public ResponseEntity<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentRequestDto appointmentCreateDto) {
+        com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto appointmentResponseDto = appointmentService.updateAppointment(id, appointmentCreateDto);
         return ResponseEntity.status(HttpStatus.OK).body(appointmentResponseDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AppointmentResponseDto> deleteAppointment(@PathVariable Long id) {
+    public ResponseEntity<com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto> deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -4,9 +4,9 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 import com.bikash.cs.dentalsurgeryms.dto.request.DentistRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
-import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
-import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
-import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
+import com.bikash.cs.dentalsurgeryms.exception.ADSIllegalStateException;
+import com.bikash.cs.dentalsurgeryms.exception.DuplicateResourceException;
+import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.DentistMapper;
 import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.User;
@@ -22,8 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class DentistServiceImpl implements DentistService {
@@ -37,20 +37,26 @@ public class DentistServiceImpl implements DentistService {
         if (dentistRepository.findByEmail(dentistRequestDto.email()).isPresent()) {
             throw new DuplicateResourceException("Email '" + dentistRequestDto.email() + "' is already taken");
         }
-        Optional<User>  user = userRepository.findByUsername(dentistRequestDto.user().username());
-        if(user.isPresent() && dentistRepository.findByUser_UserId(user.get().getUserId()).isPresent() ) {
-            throw new DuplicateResourceException("User already has a dentist account");
+        Dentist dentist = dentistMapper.dentistRequestDtoToDentist(dentistRequestDto);
+
+        Optional<User> user = userRepository.findById(dentistRequestDto.userId());
+        User savedUser;
+        if (user.isPresent()){
+            savedUser = user.get();
+            if(dentistRepository.findByUser_UserId(user.get().getUserId()).isPresent() ){
+                throw new DuplicateResourceException("User already has a dentist account");
+            }
+            dentist.setUser(savedUser);
         }
 
-        Dentist dentist = dentistMapper.dentistRequestDtoToDentist(dentistRequestDto);
         Dentist savedDentist = dentistRepository.save(dentist);
         return dentistMapper.dentistToDentistResponseDto(savedDentist);
     }
 
     @Override
-    public DentistResponseDto getDentistByEmail(String email) {
-        Dentist dentist = dentistRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Dentist with email '" + email + "' not found"));
+    public DentistResponseDto getDentistById(Long id) {
+        Dentist dentist = dentistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Dentist with id '" + id + "' not found"));
         return dentistMapper.dentistToDentistResponseDto(dentist);
     }
 
@@ -67,31 +73,17 @@ public class DentistServiceImpl implements DentistService {
     }
 
     @Override
-    public DentistResponseDto updateDentist(String email,@Valid DentistRequestDto dentistRequestDto) {
-//        Optional<Dentist> optionalDentist = dentistRepository.findByEmail(email);
-//        if (optionalDentist.isPresent()) {
-//            Dentist existingDentist = optionalDentist.get();
-//            Dentist mappedDentist = dentistMapper.dentistRequestDtoToDentist(dentistRequestDto);
-//            if(!existingDentist.getEmail().equals(dentistRequestDto.email()) &&
-//                    dentistRepository.findByEmail(mappedDentist.getEmail()).isPresent()
-//            ){
-//                throw new DuplicateResourceException("Email '" + dentistRequestDto.email() + "' already exists");
-//            }
-//            mappedDentist.setId(existingDentist.getId());
-//            Dentist updatedDentist = dentistRepository.save(mappedDentist);
-//            return dentistMapper.dentistToDentistResponseDto(updatedDentist);
-//
-//        }
-//       throw new ResourceNotFoundException("Dentist with email '" + email + "' not found");
-        Dentist existingDentist = dentistRepository.findByEmail(email)
-                .orElseThrow(()-> new ResourceNotFoundException("Dentist with email '" + email + "' not found "));
+    public DentistResponseDto updateDentist(Long id, @Valid DentistRequestDto dentistRequestDto) {
+
+        Dentist existingDentist = dentistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Dentist with id '" + id + "' not found "));
         Long existingUserId = existingDentist.getUser().getUserId();
 
-        dentistMapper.updateDentistFromDentistRequestDto(dentistRequestDto,existingDentist);
-        if(existingDentist.getUser()!=null){
+        dentistMapper.updateDentistFromDentistRequestDto(dentistRequestDto, existingDentist);
+        if (existingDentist.getUser() != null) {
             existingDentist.getUser().setUserId(existingUserId);
-        }else{
-            User  user= new User();
+        } else {
+            User user = new User();
             existingDentist.setUser(user);
         }
 
@@ -100,10 +92,10 @@ public class DentistServiceImpl implements DentistService {
     }
 
     @Override
-    public void deleteDentist(String email) {
-        Dentist dentist = dentistRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Dentist with email '" + email + "' not found"));
-        if(appointmentService.hasAppointmentsForDentistAndStatusNot(dentist, AppointmentStatus.CANCELLED)){
+    public void deleteDentist(Long id) {
+        Dentist dentist = dentistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Dentist with id '" + id + "' not found"));
+        if (appointmentService.hasAppointmentsForDentistAndStatusNot(dentist, AppointmentStatus.CANCELLED)) {
             throw new ADSIllegalStateException("Dentist has appointments in the future. Cannot delete.");
         }
         dentistRepository.delete(dentist);

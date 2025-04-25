@@ -2,9 +2,9 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.SurgeryRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.SurgeryResponseDto;
-import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
-import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
-import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
+import com.bikash.cs.dentalsurgeryms.exception.ADSIllegalStateException;
+import com.bikash.cs.dentalsurgeryms.exception.DuplicateResourceException;
+import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.SurgeryMapper;
 import com.bikash.cs.dentalsurgeryms.model.Address;
 import com.bikash.cs.dentalsurgeryms.model.Surgery;

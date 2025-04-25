@@ -3,9 +3,9 @@ package com.bikash.cs.dentalsurgeryms.service.impl;
 import com.bikash.cs.dentalsurgeryms.dto.request.PatientRequestDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus;
-import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
-import com.bikash.cs.dentalsurgeryms.exception.general.DuplicateResourceException;
-import com.bikash.cs.dentalsurgeryms.exception.general.ResourceNotFoundException;
+import com.bikash.cs.dentalsurgeryms.exception.ADSIllegalStateException;
+import com.bikash.cs.dentalsurgeryms.exception.DuplicateResourceException;
+import com.bikash.cs.dentalsurgeryms.exception.ResourceNotFoundException;
 import com.bikash.cs.dentalsurgeryms.mapper.PatientMapper;
 import com.bikash.cs.dentalsurgeryms.model.Patient;
 import com.bikash.cs.dentalsurgeryms.model.User;
@@ -37,28 +37,32 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponseDto createPatient(@Valid PatientRequestDto patientRequestDto) {
-        if (patientRepository.findByEmail(patientRequestDto.email()).isPresent()) {
+        if (patientRepository.findById(patientRequestDto.userId()).isPresent()) {
             throw new DuplicateResourceException("Email '" + patientRequestDto.email() + "' is already taken");
         }
         if (addressRepository.findByStreet(patientRequestDto.address().street()).isPresent()) {
             throw new DuplicateResourceException("Address street '" + patientRequestDto.address().street() + "' is already taken");
         }
 
-        Optional<User> user = userRepository.findByUsername(patientRequestDto.user().username());
-        if (user.isPresent() && patientRepository.findByUser_UserId(user.get().getUserId()).isPresent()) {
+        // Retrieve the existing user by id
+        User user = userRepository.findById(patientRequestDto.userId())
+                .orElseThrow(() -> new DuplicateResourceException("User not found with id: " + patientRequestDto.userId()));
+
+        if (patientRepository.findByUser_UserId(user.getUserId()).isPresent()) {
             throw new DuplicateResourceException("User already has a patient account.");
         }
 
-
         Patient patient = patientMapper.patientRequestDtoToPatient(patientRequestDto);
+        patient.setUser(user); // Link the existing user
+
         Patient savedPatient = patientRepository.save(patient);
         return patientMapper.patientToPatientResponseDto(savedPatient);
     }
 
     @Override
-    public PatientResponseDto getPatientByEmail(String email) {
-        Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient with email '" + email + "' not found"));
+    public PatientResponseDto getPatientById(Long id) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient with id  '" + id + "' not found"));
         return patientMapper.patientToPatientResponseDto(patient);
     }
 
@@ -75,7 +79,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientResponseDto updatePatient(String email, PatientRequestDto patientRequestDto) {
+    public PatientResponseDto updatePatient(Long id, PatientRequestDto patientRequestDto) {
 //        Optional<Patient> optionalPatient = patientRepository.findByEmail(email);
 //        if (optionalPatient.isPresent()) {
 //            Patient existingPatient = optionalPatient.get();
@@ -110,8 +114,8 @@ public class PatientServiceImpl implements PatientService {
 //        }
 //        throw new ResourceNotFoundException("Patient with email '" + email + "' not found");
 
-        Patient existingPatient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient with email '" + email + "' not found"));
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient with id '" + id + "' not found"));
 
         // Preserve old user and address references
         Long existingUserId = existingPatient.getUser().getUserId();
@@ -136,11 +140,11 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public void deletePatient(String email) {
-        Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient with email '" + email + "' not found"));
+    public void deletePatient(Long id) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient with id '" + id + "' not found"));
         if(appointmentService.hasAppointmentsForPatientAndStatusNot(patient, AppointmentStatus.CANCELLED)){
-            throw new ADSIllegalStateException("Cannot delete patient with email '" + email + "' as it has appointments.");
+            throw new ADSIllegalStateException("Cannot delete patient with id '" + id + "' as it has appointments.");
         }
         patientRepository.delete(patient);
     }

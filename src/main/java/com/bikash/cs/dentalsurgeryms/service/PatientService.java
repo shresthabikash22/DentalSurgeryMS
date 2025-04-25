@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface PatientService {
     PatientResponseDto createPatient(PatientRequestDto patientRequestDto);
-    PatientResponseDto getPatientByEmail(String email);
+    PatientResponseDto getPatientById(Long id);
     Page<PatientResponseDto> getAllPatients(int page, int pageSize, String sortDirection, String sortBy);
-    PatientResponseDto updatePatient(String email, PatientRequestDto patientRequestDto);
-    void deletePatient(String email);
+    PatientResponseDto updatePatient(Long id, PatientRequestDto patientRequestDto);
+    void deletePatient(Long id);
 }

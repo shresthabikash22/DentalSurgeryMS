@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +20,8 @@ import java.util.List;
         uniqueConstraints = @UniqueConstraint(columnNames = {"surgeryName", "address_id"})
 )
 @Data
+@Builder
+@AllArgsConstructor
 public class Surgery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +40,12 @@ public class Surgery {
     @Size(max = 20, message = "Phone number must be up to 20 characters")
     private String phoneNumber;
 
-    @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "address_id", unique = true )
+    @OneToOne(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
     @NotNull(message = "Address is required")
     private Address address;
 
+    @Builder.Default
     @OneToMany(mappedBy = "surgery", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments = new ArrayList<>();
 

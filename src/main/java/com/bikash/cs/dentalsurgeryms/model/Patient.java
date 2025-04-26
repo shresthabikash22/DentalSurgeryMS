@@ -8,10 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +18,8 @@ import java.util.List;
 @Table(name = "patients")
 @NoArgsConstructor
 @Getter @Setter
+@Builder
+@AllArgsConstructor
 public class Patient {
 
     @Id
@@ -71,6 +70,7 @@ public class Patient {
     private Address address;
 
 
+    @Builder.Default
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Appointment> appointments = new ArrayList<>();

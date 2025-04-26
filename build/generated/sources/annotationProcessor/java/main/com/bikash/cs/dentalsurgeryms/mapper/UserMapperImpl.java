@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-25T16:17:06-0500",
+    date = "2025-04-26T04:08:18-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -22,13 +22,13 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        User user = new User();
+        User.UserBuilder user = User.builder();
 
-        user.setPassword( userRequestDto.password() );
-        user.setRoles( stringListToRoleList( userRequestDto.roles() ) );
-        user.setUsername( userRequestDto.username() );
+        user.password( userRequestDto.password() );
+        user.roles( stringListToRoleList( userRequestDto.roles() ) );
+        user.username( userRequestDto.username() );
 
-        return user;
+        return user.build();
     }
 
     @Override
@@ -70,12 +70,12 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        User user = new User();
+        User.UserBuilder user = User.builder();
 
-        user.setUserId( userResponseDto.userId() );
-        user.setRoles( stringListToRoleList( userResponseDto.roles() ) );
-        user.setUsername( userResponseDto.username() );
+        user.userId( userResponseDto.userId() );
+        user.roles( stringListToRoleList( userResponseDto.roles() ) );
+        user.username( userResponseDto.username() );
 
-        return user;
+        return user.build();
     }
 }

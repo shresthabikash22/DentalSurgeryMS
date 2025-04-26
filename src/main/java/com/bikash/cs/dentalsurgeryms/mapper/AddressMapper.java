@@ -11,6 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AddressMapper {
+    @Mapping(target = "id", ignore = true)
     Address addressRequestDtoToAddress(AddressRequestDto addressRequestDto);
 
     @Mapping(source = "id", target = "addressId")

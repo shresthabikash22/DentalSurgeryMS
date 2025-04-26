@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/surgeries").hasRole(Role.MANAGER.name())
                         .requestMatchers("/api/v1/surgeries/*").hasRole(Role.MANAGER.name())
 
-                        .requestMatchers(HttpMethod.POST, "/api/v1/appointments").hasAnyRole(Role.MANAGER.name(), Role.PATIENT.name())
+                        .requestMatchers(HttpMethod.POST, "/api/v1/appointments").hasAnyRole( Role.PATIENT.name())
                         .requestMatchers("/api/v1/appointments/{id}/cancel").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
                         .requestMatchers("/api/v1/appointments/patient/{id}").hasAnyRole(Role.PATIENT.name(), Role.MANAGER.name())
                         .requestMatchers("/api/v1/appointments/dentist/{id}").hasAnyRole(Role.DENTIST.name(), Role.MANAGER.name())

@@ -14,9 +14,15 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses={AddressMapper.class, UserMapper.class})
 public interface PatientMapper {
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "appointments", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "hasUnpaidBill", ignore = true)
     Patient patientRequestDtoToPatient(PatientRequestDto patientRequestDto);
+
+
     PatientResponseDto patientToPatientResponseDto(Patient patient);
-    List<PatientResponseDto> patientToPatientResponseDtoPage(List<Patient> patients);
-    void updatePatientFromPatientRequestDto(PatientRequestDto patientRequestDto, @MappingTarget Patient patient);
+//    List<PatientResponseDto> patientToPatientResponseDtoPage(List<Patient> patients);
+
+//    void updatePatientFromPatientRequestDto(PatientRequestDto patientRequestDto, @MappingTarget Patient patient);
     PatientBasicResponseDto patientToPatientBasicResponseDto(Patient patient);
 }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-25T16:17:06-0500",
+    date = "2025-04-26T04:08:18-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -28,14 +28,14 @@ public class SurgeryMapperImpl implements SurgeryMapper {
             return null;
         }
 
-        Surgery surgery = new Surgery();
+        Surgery.SurgeryBuilder surgery = Surgery.builder();
 
-        surgery.setSurgeryName( surgeryRequestDto.name() );
-        surgery.setAddress( addressMapper.addressRequestDtoToAddress( surgeryRequestDto.addressRequestDto() ) );
-        surgery.setPhoneNumber( surgeryRequestDto.phoneNumber() );
-        surgery.setBranchCode( surgeryRequestDto.branchCode() );
+        surgery.surgeryName( surgeryRequestDto.name() );
+        surgery.address( addressMapper.addressRequestDtoToAddress( surgeryRequestDto.addressRequestDto() ) );
+        surgery.phoneNumber( surgeryRequestDto.phoneNumber() );
+        surgery.branchCode( surgeryRequestDto.branchCode() );
 
-        return surgery;
+        return surgery.build();
     }
 
     @Override

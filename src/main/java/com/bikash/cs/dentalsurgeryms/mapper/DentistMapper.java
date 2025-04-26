@@ -14,13 +14,20 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses ={UserMapper.class})
 public interface DentistMapper {
 
+    @Mapping(target="id",ignore = true)
+    @Mapping(target="appointments",ignore = true)
     @Mapping(target = "user", ignore = true)
+
     Dentist dentistRequestDtoToDentist(DentistRequestDto dentistRequestDto);
+
 
     DentistResponseDto dentistToDentistResponseDto(Dentist dentist);
 
     List<DentistResponseDto> dentistToDentistResponseDto(List<Dentist> dentists);
 
+    @Mapping(target="id",ignore = true)
+    @Mapping(target="user",ignore = true)
+    @Mapping(target="appointments",ignore = true)
     void updateDentistFromDentistRequestDto(DentistRequestDto dentistRequestDto, @MappingTarget Dentist dentist);
 
     DentistBasicResponseDto dentistToDentistBasicResponseDto(Dentist dentist);

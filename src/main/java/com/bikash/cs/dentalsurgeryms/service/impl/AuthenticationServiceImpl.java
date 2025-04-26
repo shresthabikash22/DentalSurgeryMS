@@ -1,5 +1,6 @@
 package com.bikash.cs.dentalsurgeryms.service.impl;
 
+import com.bikash.cs.dentalsurgeryms.exception.InvalidRequestException;
 import com.bikash.cs.dentalsurgeryms.security.JwtService;
 import com.bikash.cs.dentalsurgeryms.dto.request.*;
 import com.bikash.cs.dentalsurgeryms.dto.response.AuthenticationResponse;
@@ -78,7 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if(role == Role.DENTIST || role == Role.MANAGER){
             if( registerRequestDto.specialization() ==null || registerRequestDto.specialization().trim().isEmpty() ) {
-                throw new NullPointerException("Specialization cannot be null or empty");
+                throw new InvalidRequestException("Specialization cannot be null or empty");
             }
             DentistResponseDto dentistResponseDto = dentistService.createDentist(new DentistRequestDto(
                     registerRequestDto.firstName(),
@@ -88,12 +89,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     registerRequestDto.specialization(),
                    registeredUser.getUserId()
             ));
-        }else{
+        }
+        if(role == Role.PATIENT){
             if(registerRequestDto.dateOfBirth()==null ){
                 throw new NullPointerException("Date of birth cannot be null");
             }
             if(!registerRequestDto.dateOfBirth().isBefore(LocalDate.now())){
-                throw new IllegalArgumentException("Date of birth shuold be in the past");
+                throw new InvalidRequestException("Date of birth shuold be in the past");
             }
             PatientResponseDto patientResponseDto =
                     patientService.createPatient(new PatientRequestDto(

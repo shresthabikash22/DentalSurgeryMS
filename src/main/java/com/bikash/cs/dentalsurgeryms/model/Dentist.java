@@ -2,6 +2,8 @@ package com.bikash.cs.dentalsurgeryms.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "dentists")
 @Data
+@Builder
+@AllArgsConstructor
 public class Dentist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +52,7 @@ public class Dentist {
     @NotNull(message = "User is required")
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "dentist",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Appointment> appointments = new ArrayList<>();
 

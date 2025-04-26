@@ -3,9 +3,7 @@ package com.bikash.cs.dentalsurgeryms.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -14,6 +12,8 @@ import java.util.Objects;
 @Entity
 @EqualsAndHashCode
 @Table(name = "addresses")
+@Builder
+@AllArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

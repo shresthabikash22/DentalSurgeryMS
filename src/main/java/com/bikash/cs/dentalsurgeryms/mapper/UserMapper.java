@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 public interface UserMapper {
     @Mapping(source = "password", target = "password")
     @Mapping(source = "roles", target = "roles", qualifiedByName = "stringListToRoleList")
+    @Mapping(target = "userId", ignore = true)
+    @Mapping(target="patient",ignore = true)
+    @Mapping(target="dentist",ignore = true)
     User userRequestDtoToUser(UserRequestDto userRequestDto);
 
     @Mapping(source = "userId", target = "userId")
@@ -23,7 +26,9 @@ public interface UserMapper {
     UserResponseDto userToUserResponseDto(User user);
 
     List<UserResponseDto> userToUserResponseDto(List<User> users);
-
+    @Mapping(target="patient",ignore = true)
+    @Mapping(target="dentist",ignore = true)
+    @Mapping(target="password",ignore = true)
     @Mapping(source = "userId", target = "userId")
     @Mapping(source = "roles", target = "roles", qualifiedByName = "stringListToRoleList")
     User userResponseDtoToUser(UserResponseDto userResponseDto);

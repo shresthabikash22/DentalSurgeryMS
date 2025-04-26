@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-25T16:17:06-0500",
+    date = "2025-04-25T22:34:20-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -22,14 +22,14 @@ public class AddressMapperImpl implements AddressMapper {
             return null;
         }
 
-        Address address = new Address();
+        Address.AddressBuilder address = Address.builder();
 
-        address.setStreet( addressRequestDto.street() );
-        address.setCity( addressRequestDto.city() );
-        address.setState( addressRequestDto.state() );
-        address.setZipCode( addressRequestDto.zipCode() );
+        address.street( addressRequestDto.street() );
+        address.city( addressRequestDto.city() );
+        address.state( addressRequestDto.state() );
+        address.zipCode( addressRequestDto.zipCode() );
 
-        return address;
+        return address.build();
     }
 
     @Override

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-25T16:17:06-0500",
+    date = "2025-04-26T04:08:18-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -38,16 +38,16 @@ public class AppointmentMapperImpl implements AppointmentMapper {
             return null;
         }
 
-        Appointment appointment = new Appointment();
+        Appointment.AppointmentBuilder appointment = Appointment.builder();
 
-        appointment.setPatient( appointmentRequestDtoToPatient( appointmentResponseDto ) );
-        appointment.setDentist( appointmentRequestDtoToDentist( appointmentResponseDto ) );
-        appointment.setSurgery( appointmentRequestDtoToSurgery( appointmentResponseDto ) );
-        appointment.setAppointmentDateTime( appointmentResponseDto.appointmentDateTime() );
+        appointment.patient( appointmentRequestDtoToPatient( appointmentResponseDto ) );
+        appointment.dentist( appointmentRequestDtoToDentist( appointmentResponseDto ) );
+        appointment.surgery( appointmentRequestDtoToSurgery( appointmentResponseDto ) );
+        appointment.appointmentDateTime( appointmentResponseDto.appointmentDateTime() );
 
-        appointment.setStatus( com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus.SCHEDULED );
+        appointment.status( com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus.SCHEDULED );
 
-        return appointment;
+        return appointment.build();
     }
 
     @Override
@@ -94,11 +94,11 @@ public class AppointmentMapperImpl implements AppointmentMapper {
             return null;
         }
 
-        Patient patient = new Patient();
+        Patient.PatientBuilder patient = Patient.builder();
 
-        patient.setId( appointmentRequestDto.patientId() );
+        patient.id( appointmentRequestDto.patientId() );
 
-        return patient;
+        return patient.build();
     }
 
     protected Dentist appointmentRequestDtoToDentist(AppointmentRequestDto appointmentRequestDto) {
@@ -106,11 +106,11 @@ public class AppointmentMapperImpl implements AppointmentMapper {
             return null;
         }
 
-        Dentist dentist = new Dentist();
+        Dentist.DentistBuilder dentist = Dentist.builder();
 
-        dentist.setId( appointmentRequestDto.dentistId() );
+        dentist.id( appointmentRequestDto.dentistId() );
 
-        return dentist;
+        return dentist.build();
     }
 
     protected Surgery appointmentRequestDtoToSurgery(AppointmentRequestDto appointmentRequestDto) {
@@ -118,10 +118,10 @@ public class AppointmentMapperImpl implements AppointmentMapper {
             return null;
         }
 
-        Surgery surgery = new Surgery();
+        Surgery.SurgeryBuilder surgery = Surgery.builder();
 
-        surgery.setId( appointmentRequestDto.surgeryId() );
+        surgery.id( appointmentRequestDto.surgeryId() );
 
-        return surgery;
+        return surgery.build();
     }
 }

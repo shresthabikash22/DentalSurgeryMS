@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-25T16:17:06-0500",
+    date = "2025-04-26T04:08:18-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -35,16 +35,16 @@ public class PatientMapperImpl implements PatientMapper {
             return null;
         }
 
-        Patient patient = new Patient();
+        Patient.PatientBuilder patient = Patient.builder();
 
-        patient.setFirstName( patientRequestDto.firstName() );
-        patient.setLastName( patientRequestDto.lastName() );
-        patient.setPhoneNumber( patientRequestDto.phoneNumber() );
-        patient.setEmail( patientRequestDto.email() );
-        patient.setDateOfBirth( patientRequestDto.dateOfBirth() );
-        patient.setAddress( addressMapper.addressRequestDtoToAddress( patientRequestDto.address() ) );
+        patient.firstName( patientRequestDto.firstName() );
+        patient.lastName( patientRequestDto.lastName() );
+        patient.phoneNumber( patientRequestDto.phoneNumber() );
+        patient.email( patientRequestDto.email() );
+        patient.dateOfBirth( patientRequestDto.dateOfBirth() );
+        patient.address( addressMapper.addressRequestDtoToAddress( patientRequestDto.address() ) );
 
-        return patient;
+        return patient.build();
     }
 
     @Override
@@ -76,34 +76,6 @@ public class PatientMapperImpl implements PatientMapper {
         PatientResponseDto patientResponseDto = new PatientResponseDto( id, firstName, lastName, phoneNumber, email, hasUnpaidBill, dateOfBirth, address, appointments );
 
         return patientResponseDto;
-    }
-
-    @Override
-    public List<PatientResponseDto> patientToPatientResponseDtoPage(List<Patient> patients) {
-        if ( patients == null ) {
-            return null;
-        }
-
-        List<PatientResponseDto> list = new ArrayList<PatientResponseDto>( patients.size() );
-        for ( Patient patient : patients ) {
-            list.add( patientToPatientResponseDto( patient ) );
-        }
-
-        return list;
-    }
-
-    @Override
-    public void updatePatientFromPatientRequestDto(PatientRequestDto patientRequestDto, Patient patient) {
-        if ( patientRequestDto == null ) {
-            return;
-        }
-
-        patient.setFirstName( patientRequestDto.firstName() );
-        patient.setLastName( patientRequestDto.lastName() );
-        patient.setPhoneNumber( patientRequestDto.phoneNumber() );
-        patient.setEmail( patientRequestDto.email() );
-        patient.setDateOfBirth( patientRequestDto.dateOfBirth() );
-        patient.setAddress( addressMapper.addressRequestDtoToAddress( patientRequestDto.address() ) );
     }
 
     @Override

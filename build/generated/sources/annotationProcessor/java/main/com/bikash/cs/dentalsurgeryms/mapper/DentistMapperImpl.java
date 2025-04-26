@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-25T16:17:06-0500",
+    date = "2025-04-26T04:08:18-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -29,15 +29,15 @@ public class DentistMapperImpl implements DentistMapper {
             return null;
         }
 
-        Dentist dentist = new Dentist();
+        Dentist.DentistBuilder dentist = Dentist.builder();
 
-        dentist.setFirstName( dentistRequestDto.firstName() );
-        dentist.setLastName( dentistRequestDto.lastName() );
-        dentist.setPhoneNumber( dentistRequestDto.phoneNumber() );
-        dentist.setEmail( dentistRequestDto.email() );
-        dentist.setSpecialization( dentistRequestDto.specialization() );
+        dentist.firstName( dentistRequestDto.firstName() );
+        dentist.lastName( dentistRequestDto.lastName() );
+        dentist.phoneNumber( dentistRequestDto.phoneNumber() );
+        dentist.email( dentistRequestDto.email() );
+        dentist.specialization( dentistRequestDto.specialization() );
 
-        return dentist;
+        return dentist.build();
     }
 
     @Override

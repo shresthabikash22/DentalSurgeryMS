@@ -29,6 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -53,7 +54,7 @@ public class PatientServiceImpl implements PatientService {
 
         // Retrieve the existing user by id
         User user = userRepository.findById(patientRequestDto.userId())
-                .orElseThrow(() -> new DuplicateResourceException("User not found with id: " + patientRequestDto.userId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + patientRequestDto.userId()));
 
         if (patientRepository.findByUser_UserId(user.getUserId()).isPresent()) {
             throw new DuplicateResourceException("User already has a patient account.");
@@ -87,13 +88,14 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponseDto updatePatient(Long id,  PatientRequestDto patientRequestDto) {
-        Optional<Patient> optionalPatient = patientRepository.findByEmail(patientRequestDto.email());
+        Optional<Patient> optionalPatient = patientRepository.findById(id);
         if (optionalPatient.isPresent()) {
             Patient existingPatient = optionalPatient.get();
             Patient mappedPatient = patientMapper.patientRequestDtoToPatient(patientRequestDto);
             mappedPatient.setId(existingPatient.getId());
 
-            if(!existingPatient.getEmail().equals(mappedPatient.getEmail()) &&
+            if( mappedPatient.getEmail() != null &&
+                    !Objects.equals(existingPatient.getEmail(), mappedPatient.getEmail()) &&
                     patientRepository.findByEmail(mappedPatient.getEmail()).isPresent()
             ) {
                 throw new DuplicateResourceException("Email '" + existingPatient.getEmail() + "' is already taken");

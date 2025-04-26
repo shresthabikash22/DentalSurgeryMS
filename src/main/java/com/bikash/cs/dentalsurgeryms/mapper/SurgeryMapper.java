@@ -16,6 +16,8 @@ public interface SurgeryMapper {
     @Mapping(source = "name", target = "surgeryName")
     @Mapping(source = "addressRequestDto", target = "address")
     @Mapping(source = "phoneNumber", target = "phoneNumber")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target="appointments",ignore = true)
     Surgery surgeryRequestDtoToSurgery(SurgeryRequestDto surgeryRequestDto);
 
     @Mapping(source = "id", target = "surgeryId")

@@ -1,4 +1,4 @@
-package com.bikash.cs.dentalsurgeryms.exception.general;
+package com.bikash.cs.dentalsurgeryms.exception;
 
 public class DuplicateResourceException extends RuntimeException {
     public DuplicateResourceException(String message) {

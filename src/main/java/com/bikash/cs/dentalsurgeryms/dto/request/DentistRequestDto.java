@@ -25,8 +25,6 @@ public record DentistRequestDto(
         @Size(max = 100, message = "Specialization must be ≤ 100 characters")
         String specialization,
 
-        @Valid
-        @NotNull(message = "User credentials cannot be null")
-        UserRequestDto user
+        Long userId
 ) {
 }

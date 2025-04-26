@@ -1,8 +1,5 @@
 package com.bikash.cs.dentalsurgeryms.exception;
 
-import com.bikash.cs.dentalsurgeryms.exception.general.*;
-import com.bikash.cs.dentalsurgeryms.exception.general.ADSIllegalStateException;
-import com.bikash.cs.dentalsurgeryms.exception.role.InvalidRoleException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.Instant;
 
 @RestControllerAdvice
-public class DentalSurgeryMSExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ApiError> handleDuplicateResourceException(DuplicateResourceException e, HttpServletRequest request){
@@ -54,6 +51,17 @@ public class DentalSurgeryMSExceptionHandler {
     public ResponseEntity<ApiError> handleADSIllegalStateException(ADSIllegalStateException e, HttpServletRequest request){
         ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT.value(), Instant.now());
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AppointmentRequestException.class)
+    public ResponseEntity<ApiError> handleAppointmentRequestException(AppointmentRequestException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.CONFLICT.value(), Instant.now());
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request){
+        ApiError apiError = new ApiError(e.getMessage(), request.getRequestURI(), HttpStatus.FORBIDDEN.value(), Instant.now());
+        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
     }
 
 }

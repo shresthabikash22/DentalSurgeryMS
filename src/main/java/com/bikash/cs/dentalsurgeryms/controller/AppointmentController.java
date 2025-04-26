@@ -20,8 +20,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<AppointmentResponseDto> createAppointment(@Valid @RequestBody  AppointmentRequestDto appointmentRequestDto) {
-        AppointmentResponseDto appointmentResponseDto = appointmentService.createAppointment(appointmentRequestDto);
+    public ResponseEntity<AppointmentResponseDto> createAppointment(@Valid @RequestBody AppointmentRequestDto appointmentCreateDto) {
+        AppointmentResponseDto appointmentResponseDto = appointmentService.createAppointment(appointmentCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentResponseDto);
     }
 
@@ -58,7 +58,7 @@ public class AppointmentController {
     ){
         Page<AppointmentResponseDto> appointmentsPage = appointmentService.getAppointmentsByDentistId(dentistId, page, pageSize,  sortDirection,sortBy);
         PagedModel<EntityModel<AppointmentResponseDto>> pagedModel = pagedResourcesAssembler.toModel(appointmentsPage);
-        return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
+            return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
     @PutMapping("/{id}/cancel")
@@ -68,8 +68,8 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
-        AppointmentResponseDto appointmentResponseDto = appointmentService.updateAppointment(id, appointmentRequestDto);
+    public ResponseEntity<AppointmentResponseDto> updateAppointment(@PathVariable Long id, @Valid @RequestBody AppointmentRequestDto appointmentCreateDto) {
+        AppointmentResponseDto appointmentResponseDto = appointmentService.updateAppointment(id, appointmentCreateDto);
         return ResponseEntity.status(HttpStatus.OK).body(appointmentResponseDto);
     }
 

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-24T11:30:44-0500",
+    date = "2025-04-25T16:17:06-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -33,17 +33,17 @@ public class AppointmentMapperImpl implements AppointmentMapper {
     private SurgeryMapper surgeryMapper;
 
     @Override
-    public Appointment appointmentRequestDtoToAppointment(AppointmentRequestDto appointmentRequestDto) {
-        if ( appointmentRequestDto == null ) {
+    public Appointment appointmentRequestDtoToAppointment(AppointmentRequestDto appointmentResponseDto) {
+        if ( appointmentResponseDto == null ) {
             return null;
         }
 
         Appointment appointment = new Appointment();
 
-        appointment.setPatient( appointmentRequestDtoToPatient( appointmentRequestDto ) );
-        appointment.setDentist( appointmentRequestDtoToDentist( appointmentRequestDto ) );
-        appointment.setSurgery( appointmentRequestDtoToSurgery( appointmentRequestDto ) );
-        appointment.setAppointmentDateTime( appointmentRequestDto.appointmentDateTime() );
+        appointment.setPatient( appointmentRequestDtoToPatient( appointmentResponseDto ) );
+        appointment.setDentist( appointmentRequestDtoToDentist( appointmentResponseDto ) );
+        appointment.setSurgery( appointmentRequestDtoToSurgery( appointmentResponseDto ) );
+        appointment.setAppointmentDateTime( appointmentResponseDto.appointmentDateTime() );
 
         appointment.setStatus( com.bikash.cs.dentalsurgeryms.enums.AppointmentStatus.SCHEDULED );
 

@@ -1,7 +1,9 @@
 package com.bikash.cs.dentalsurgeryms.controller;
 
 import com.bikash.cs.dentalsurgeryms.dto.request.DentistRequestDto;
+import com.bikash.cs.dentalsurgeryms.dto.response.AppointmentResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
+import com.bikash.cs.dentalsurgeryms.enums.Role;
 import com.bikash.cs.dentalsurgeryms.service.DentistService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class DentistController {
     private final DentistService dentistService;
+
     @PostMapping
     public ResponseEntity<DentistResponseDto> createDentist(@Valid @RequestBody DentistRequestDto dentistRequestDto) {
         DentistResponseDto createdSurgery = dentistService.createDentist(dentistRequestDto);
@@ -25,9 +30,9 @@ public class DentistController {
     }
 
 
-    @GetMapping("/{email}")
-    public ResponseEntity<DentistResponseDto> getDentistByEmail(@PathVariable String email) {
-        DentistResponseDto dentist = dentistService.getDentistByEmail(email);
+    @GetMapping("/{id}")
+    public ResponseEntity<DentistResponseDto> getDentistById(@PathVariable Long id) {
+        DentistResponseDto dentist = dentistService.getDentistById(id);
         return ResponseEntity.status(HttpStatus.OK).body(dentist);
     }
 
@@ -44,15 +49,31 @@ public class DentistController {
         return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<DentistResponseDto> updateDentist(@PathVariable String email, @Valid @RequestBody DentistRequestDto dentistRequestDto) {
-        DentistResponseDto  dentistResponseDto = dentistService.updateDentist(email, dentistRequestDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<DentistResponseDto> updateDentist(@PathVariable Long id, @Valid @RequestBody DentistRequestDto dentistRequestDto) {
+        DentistResponseDto dentistResponseDto = dentistService.updateDentist(id, dentistRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(dentistResponseDto);
     }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<DentistResponseDto> deleteDentist(@PathVariable String email) {
-        dentistService.deleteDentist(email);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DentistResponseDto> deleteDentist(@PathVariable Long id, @RequestParam Role role) {
+        dentistService.deleteDentist(id,role);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{id}/appointments")
+    public ResponseEntity<PagedModel<EntityModel<AppointmentResponseDto>>> getAppointmentsByDentistId(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            PagedResourcesAssembler<AppointmentResponseDto> pagedResourcesAssembler
+    ) {
+        Page<AppointmentResponseDto> appointmentResponseDtos =
+                dentistService.getAppointmentsByDentist(id,userDetails,page,pageSize,sortDirection,sortBy);
+        PagedModel<EntityModel<AppointmentResponseDto>>  pagedModel = pagedResourcesAssembler.toModel(appointmentResponseDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(pagedModel);
     }
 }

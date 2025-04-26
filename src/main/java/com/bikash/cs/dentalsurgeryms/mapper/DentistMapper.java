@@ -5,6 +5,7 @@ import com.bikash.cs.dentalsurgeryms.dto.response.DentistBasicResponseDto;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
 import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
@@ -12,6 +13,8 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses ={UserMapper.class})
 public interface DentistMapper {
+
+    @Mapping(target = "user", ignore = true)
     Dentist dentistRequestDtoToDentist(DentistRequestDto dentistRequestDto);
 
     DentistResponseDto dentistToDentistResponseDto(Dentist dentist);

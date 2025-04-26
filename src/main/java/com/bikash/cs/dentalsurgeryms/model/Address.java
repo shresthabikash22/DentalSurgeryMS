@@ -4,11 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
 @Table(name = "addresses")
 public class Address {
     @Id
@@ -17,7 +21,6 @@ public class Address {
 
     @NotBlank(message = "Street is required")
     @Size(max = 100, message = "Street must be up to 100 characters")
-    @Column(unique = true)
     private String street;
 
     @NotBlank(message = "City is required")
@@ -38,4 +41,6 @@ public class Address {
         this.state = state;
         this.zipCode = zip;
     }
+
+
 }

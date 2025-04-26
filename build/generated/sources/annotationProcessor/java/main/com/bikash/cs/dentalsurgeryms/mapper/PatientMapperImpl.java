@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-24T11:27:07-0500",
+    date = "2025-04-25T16:17:06-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 21.0.2 (Oracle Corporation)"
 )
 @Component
@@ -28,8 +28,6 @@ public class PatientMapperImpl implements PatientMapper {
 
     @Autowired
     private AddressMapper addressMapper;
-    @Autowired
-    private UserMapper userMapper;
 
     @Override
     public Patient patientRequestDtoToPatient(PatientRequestDto patientRequestDto) {
@@ -44,7 +42,6 @@ public class PatientMapperImpl implements PatientMapper {
         patient.setPhoneNumber( patientRequestDto.phoneNumber() );
         patient.setEmail( patientRequestDto.email() );
         patient.setDateOfBirth( patientRequestDto.dateOfBirth() );
-        patient.setUser( userMapper.userRequestDtoToUser( patientRequestDto.user() ) );
         patient.setAddress( addressMapper.addressRequestDtoToAddress( patientRequestDto.address() ) );
 
         return patient;
@@ -106,7 +103,6 @@ public class PatientMapperImpl implements PatientMapper {
         patient.setPhoneNumber( patientRequestDto.phoneNumber() );
         patient.setEmail( patientRequestDto.email() );
         patient.setDateOfBirth( patientRequestDto.dateOfBirth() );
-        patient.setUser( userMapper.userRequestDtoToUser( patientRequestDto.user() ) );
         patient.setAddress( addressMapper.addressRequestDtoToAddress( patientRequestDto.address() ) );
     }
 

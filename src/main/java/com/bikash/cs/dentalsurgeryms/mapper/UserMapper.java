@@ -24,6 +24,10 @@ public interface UserMapper {
 
     List<UserResponseDto> userToUserResponseDto(List<User> users);
 
+    @Mapping(source = "userId", target = "userId")
+    @Mapping(source = "roles", target = "roles", qualifiedByName = "stringListToRoleList")
+    User userResponseDtoToUser(UserResponseDto userResponseDto);
+
     @Named("stringListToRoleList")
     default List<Role> stringListToRoleList(List<String> roleStrings) {
         if (roleStrings == null) return null;
@@ -39,4 +43,5 @@ public interface UserMapper {
                 .map(Role::name)
                 .collect(Collectors.toList());
     }
+
 }

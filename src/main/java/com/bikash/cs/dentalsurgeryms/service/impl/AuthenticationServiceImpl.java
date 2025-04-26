@@ -1,6 +1,6 @@
 package com.bikash.cs.dentalsurgeryms.service.impl;
 
-import com.bikash.cs.dentalsurgeryms.config.JwtService;
+import com.bikash.cs.dentalsurgeryms.security.JwtService;
 import com.bikash.cs.dentalsurgeryms.dto.request.*;
 import com.bikash.cs.dentalsurgeryms.dto.response.AuthenticationResponse;
 import com.bikash.cs.dentalsurgeryms.dto.response.DentistResponseDto;
@@ -8,7 +8,6 @@ import com.bikash.cs.dentalsurgeryms.dto.response.PatientResponseDto;
 import com.bikash.cs.dentalsurgeryms.enums.Role;
 import com.bikash.cs.dentalsurgeryms.exception.DuplicateResourceException;
 import com.bikash.cs.dentalsurgeryms.mapper.UserMapper;
-import com.bikash.cs.dentalsurgeryms.model.Dentist;
 import com.bikash.cs.dentalsurgeryms.model.User;
 import com.bikash.cs.dentalsurgeryms.repository.DentistRepository;
 import com.bikash.cs.dentalsurgeryms.repository.PatientRepository;
@@ -17,7 +16,6 @@ import com.bikash.cs.dentalsurgeryms.service.AuthenticationService;
 import com.bikash.cs.dentalsurgeryms.service.DentistService;
 import com.bikash.cs.dentalsurgeryms.service.PatientService;
 import com.bikash.cs.dentalsurgeryms.service.UserService;
-import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,8 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

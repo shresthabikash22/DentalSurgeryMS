@@ -1,4 +1,4 @@
-package com.bikash.cs.dentalsurgeryms.config;
+package com.bikash.cs.dentalsurgeryms.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

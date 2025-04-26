@@ -1,4 +1,4 @@
-package com.bikash.cs.dentalsurgeryms.config;
+package com.bikash.cs.dentalsurgeryms.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

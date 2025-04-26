@@ -1,4 +1,4 @@
-package com.bikash.cs.dentalsurgeryms.config;
+package com.bikash.cs.dentalsurgeryms.security;
 
 import com.bikash.cs.dentalsurgeryms.enums.Role;
 import lombok.RequiredArgsConstructor;

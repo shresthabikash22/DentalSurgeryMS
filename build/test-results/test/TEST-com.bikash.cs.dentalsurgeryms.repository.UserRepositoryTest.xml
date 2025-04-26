@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-04-26T17:24:59.912Z" hostname="DESKTOP-MOANBAB" time="0.173">
+  <properties/>
+  <testcase name="test for saving new user" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.013"/>
+  <testcase name="test for deleting user" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.039"/>
+  <testcase name="test for saving existing user" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.045"/>
+  <testcase name="test for finding user by username" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.015"/>
+  <testcase name="test for finding all users" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.01"/>
+  <testcase name="find list of users using page" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.018"/>
+  <testcase name="find list of users using page" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.014"/>
+  <testcase name="test for finding user by username" classname="com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest" time="0.01"/>
+  <system-out><![CDATA[2025-04-26T12:24:59.882-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest]: UserRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-04-26T12:24:59.908-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bikash.cs.dentalsurgeryms.DentalSurgeryMsApplication for test class com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: delete from user_roles where user_id=?
+Hibernate: delete from users where user_id=?
+Hibernate: select u1_0.user_id,u1_0.password,r1_0.user_id,r1_0.role,u1_0.username from users u1_0 join user_roles r1_0 on u1_0.user_id=r1_0.user_id where u1_0.username=?
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+2025-04-26T12:24:59.994-05:00  WARN 12668 --- [DentalSurgeryMS] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 23505, SQLState: 23505
+2025-04-26T12:24:59.996-05:00 ERROR 12668 --- [DentalSurgeryMS] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : Unique index or primary key violation: "PUBLIC.CONSTRAINT_INDEX_4 ON PUBLIC.USERS(USERNAME NULLS FIRST) VALUES ( /* 32 */ 'RonMiller57' )"; SQL statement:
+insert into users (password,username,user_id) values (?,?,default) [23505-232]
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select u1_0.user_id,u1_0.password,r1_0.user_id,r1_0.role,u1_0.username from users u1_0 join user_roles r1_0 on u1_0.user_id=r1_0.user_id where u1_0.username=?
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select u1_0.user_id,u1_0.password,u1_0.username from users u1_0
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select u1_0.user_id,u1_0.password,u1_0.username from users u1_0 order by u1_0.username offset ? rows fetch first ? rows only
+Hibernate: select count(u1_0.user_id) from users u1_0
+Hibernate: select u1_0.user_id,u1_0.password,u1_0.username from users u1_0 order by u1_0.username offset ? rows fetch first ? rows only
+Hibernate: select count(u1_0.user_id) from users u1_0
+Hibernate: select u1_0.user_id,u1_0.password,r1_0.user_id,r1_0.role,u1_0.username from users u1_0 join user_roles r1_0 on u1_0.user_id=r1_0.user_id where u1_0.username=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

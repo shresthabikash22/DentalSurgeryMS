@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - PatientRepositoryTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>PatientRepositoryTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.bikash.cs.dentalsurgeryms.repository.html">com.bikash.cs.dentalsurgeryms.repository</a> &gt; PatientRepositoryTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">7</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.122s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">Delete patient</td>
+<td class="success">givenExistingPatient_whenDelete_thenPatientDeleted()</td>
+<td class="success">0.013s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Find patient by email</td>
+<td class="success">givenExistingPatient_whenFindByEmail_thenReturnPatient()</td>
+<td class="success">0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Find patient by ID</td>
+<td class="success">givenExistingPatient_whenFindById_thenReturnPatient()</td>
+<td class="success">0.022s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Find patient by userId</td>
+<td class="success">givenExistingPatient_whenFindByUserId_thenReturnPatient()</td>
+<td class="success">0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Returns empty when patient not found by email</td>
+<td class="success">givenNonExistingPatient_whenFindByEmail_thenReturnsEmpty()</td>
+<td class="success">0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Find all paginated patients</td>
+<td class="success">givenPatients_whenFindAllPaged_thenReturnPatientsPage()</td>
+<td class="success">0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Save new patient</td>
+<td class="success">givenValidPatient_whenSave_thenPatientIsSaved()</td>
+<td class="success">0.015s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2025-04-26T12:24:59.486-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bikash.cs.dentalsurgeryms.repository.PatientRepositoryTest]: PatientRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-04-26T12:24:59.505-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bikash.cs.dentalsurgeryms.DentalSurgeryMsApplication for test class com.bikash.cs.dentalsurgeryms.repository.PatientRepositoryTest
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into patients (address_id,date_of_birth,email,first_name,has_unpaid_bill,last_name,phone_number,user_id,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select p1_0.id,p1_0.address_id,p1_0.date_of_birth,p1_0.email,p1_0.first_name,p1_0.has_unpaid_bill,p1_0.last_name,p1_0.phone_number,p1_0.user_id from patients p1_0 where p1_0.email=?
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into patients (address_id,date_of_birth,email,first_name,has_unpaid_bill,last_name,phone_number,user_id,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select p1_0.id,p1_0.address_id,p1_0.date_of_birth,p1_0.email,p1_0.first_name,p1_0.has_unpaid_bill,p1_0.last_name,p1_0.phone_number,p1_0.user_id from patients p1_0 left join users u1_0 on u1_0.user_id=p1_0.user_id where u1_0.user_id=?
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into patients (address_id,date_of_birth,email,first_name,has_unpaid_bill,last_name,phone_number,user_id,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select p1_0.id,p1_0.address_id,p1_0.date_of_birth,p1_0.email,p1_0.first_name,p1_0.has_unpaid_bill,p1_0.last_name,p1_0.phone_number,p1_0.user_id from patients p1_0 offset ? rows fetch first ? rows only
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into patients (address_id,date_of_birth,email,first_name,has_unpaid_bill,last_name,phone_number,user_id,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into patients (address_id,date_of_birth,email,first_name,has_unpaid_bill,last_name,phone_number,user_id,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.address_id,p1_0.date_of_birth,p1_0.email,p1_0.first_name,p1_0.has_unpaid_bill,p1_0.last_name,p1_0.phone_number,p1_0.user_id from patients p1_0 where p1_0.email=?
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into patients (address_id,date_of_birth,email,first_name,has_unpaid_bill,last_name,phone_number,user_id,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.13</a> at Apr 26, 2025, 12:25:02 PM</p>
+</div>
+</div>
+</body>
+</html>

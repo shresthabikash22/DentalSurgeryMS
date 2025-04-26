@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2025-04-26T17:24:59.674Z" hostname="DESKTOP-MOANBAB" time="0.203">
+  <properties/>
+  <testcase name="test for finding all surgeries" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.026"/>
+  <testcase name="test for finding surgery by non-existent branchCode" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.02"/>
+  <testcase name="find paginated list of surgeries" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.06"/>
+  <testcase name="test for finding surgery by branchCode" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.019"/>
+  <testcase name="findAll returns empty page when no surgeries exist" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.013"/>
+  <testcase name="test for saving new surgery" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.014"/>
+  <testcase name="test for deleting surgery" classname="com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest" time="0.042"/>
+  <system-out><![CDATA[2025-04-26T12:24:59.648-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest]: SurgeryRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-04-26T12:24:59.670-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bikash.cs.dentalsurgeryms.DentalSurgeryMsApplication for test class com.bikash.cs.dentalsurgeryms.repository.SurgeryRepositoryTest
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into surgeries (address_id,branch_code,phone_number,surgery_name,id) values (?,?,?,?,default)
+Hibernate: select s1_0.id,s1_0.address_id,s1_0.branch_code,s1_0.phone_number,s1_0.surgery_name from surgeries s1_0
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: select s1_0.id,s1_0.address_id,s1_0.branch_code,s1_0.phone_number,s1_0.surgery_name from surgeries s1_0 where s1_0.branch_code=?
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into surgeries (address_id,branch_code,phone_number,surgery_name,id) values (?,?,?,?,default)
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into surgeries (address_id,branch_code,phone_number,surgery_name,id) values (?,?,?,?,default)
+Hibernate: select s1_0.id,s1_0.address_id,s1_0.branch_code,s1_0.phone_number,s1_0.surgery_name from surgeries s1_0 order by s1_0.branch_code offset ? rows fetch first ? rows only
+Hibernate: select count(s1_0.id) from surgeries s1_0
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into surgeries (address_id,branch_code,phone_number,surgery_name,id) values (?,?,?,?,default)
+Hibernate: select s1_0.id,s1_0.address_id,s1_0.branch_code,s1_0.phone_number,s1_0.surgery_name from surgeries s1_0 where s1_0.branch_code=?
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: select s1_0.id,s1_0.address_id,s1_0.branch_code,s1_0.phone_number,s1_0.surgery_name from surgeries s1_0 order by s1_0.branch_code offset ? rows fetch first ? rows only
+Hibernate: select count(s1_0.id) from surgeries s1_0
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into surgeries (address_id,branch_code,phone_number,surgery_name,id) values (?,?,?,?,default)
+Hibernate: select a1_0.id,a1_0.city,a1_0.state,a1_0.street,a1_0.zip_code from addresses a1_0
+Hibernate: insert into addresses (city,state,street,zip_code,id) values (?,?,?,?,default)
+Hibernate: insert into surgeries (address_id,branch_code,phone_number,surgery_name,id) values (?,?,?,?,default)
+Hibernate: delete from surgeries where id=?
+Hibernate: delete from addresses where id=?
+Hibernate: select s1_0.id,s1_0.address_id,s1_0.branch_code,s1_0.phone_number,s1_0.surgery_name from surgeries s1_0 where s1_0.branch_code=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

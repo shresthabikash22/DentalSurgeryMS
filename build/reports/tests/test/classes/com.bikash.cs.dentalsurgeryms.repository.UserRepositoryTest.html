@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - UserRepositoryTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>UserRepositoryTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.bikash.cs.dentalsurgeryms.repository.html">com.bikash.cs.dentalsurgeryms.repository</a> &gt; UserRepositoryTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">8</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.164s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">test for saving existing user</td>
+<td class="success">givenExistingUser_whenCreateUser_thenThrowException()</td>
+<td class="success">0.045s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test for deleting user</td>
+<td class="success">givenExistingUser_whenDelete_thenUserResponseDto()</td>
+<td class="success">0.039s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test for finding user by username</td>
+<td class="success">givenExistingUser_whenFindByUsername_thenReturnUserResponseDTo()</td>
+<td class="success">0.015s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">find list of users using page</td>
+<td class="success">givenExistingUsers_whenFindAll_thenReturnPaginatedUsersList()</td>
+<td class="success">0.018s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test for saving new user</td>
+<td class="success">givenNonExistingUser_whenCreateUser_thenUserResponseDto()</td>
+<td class="success">0.013s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test for finding user by username</td>
+<td class="success">givenNonExistingUser_whenFindByUsername_thenReturnNull()</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">find list of users using page</td>
+<td class="success">givenNonExistingUsers_whenFindAll_thenReturnsNoUsers()</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test for finding all users</td>
+<td class="success">givenUsers_whenFindAll_thenReturnList()</td>
+<td class="success">0.010s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2025-04-26T12:24:59.882-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest]: UserRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-04-26T12:24:59.908-05:00  INFO 12668 --- [DentalSurgeryMS] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.bikash.cs.dentalsurgeryms.DentalSurgeryMsApplication for test class com.bikash.cs.dentalsurgeryms.repository.UserRepositoryTest
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: delete from user_roles where user_id=?
+Hibernate: delete from users where user_id=?
+Hibernate: select u1_0.user_id,u1_0.password,r1_0.user_id,r1_0.role,u1_0.username from users u1_0 join user_roles r1_0 on u1_0.user_id=r1_0.user_id where u1_0.username=?
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+2025-04-26T12:24:59.994-05:00  WARN 12668 --- [DentalSurgeryMS] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 23505, SQLState: 23505
+2025-04-26T12:24:59.996-05:00 ERROR 12668 --- [DentalSurgeryMS] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : Unique index or primary key violation: &quot;PUBLIC.CONSTRAINT_INDEX_4 ON PUBLIC.USERS(USERNAME NULLS FIRST) VALUES ( /* 32 */ 'RonMiller57' )&quot;; SQL statement:
+insert into users (password,username,user_id) values (?,?,default) [23505-232]
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select u1_0.user_id,u1_0.password,r1_0.user_id,r1_0.role,u1_0.username from users u1_0 join user_roles r1_0 on u1_0.user_id=r1_0.user_id where u1_0.username=?
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select u1_0.user_id,u1_0.password,u1_0.username from users u1_0
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into users (password,username,user_id) values (?,?,default)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: insert into user_roles (user_id,role) values (?,?)
+Hibernate: select u1_0.user_id,u1_0.password,u1_0.username from users u1_0 order by u1_0.username offset ? rows fetch first ? rows only
+Hibernate: select count(u1_0.user_id) from users u1_0
+Hibernate: select u1_0.user_id,u1_0.password,u1_0.username from users u1_0 order by u1_0.username offset ? rows fetch first ? rows only
+Hibernate: select count(u1_0.user_id) from users u1_0
+Hibernate: select u1_0.user_id,u1_0.password,r1_0.user_id,r1_0.role,u1_0.username from users u1_0 join user_roles r1_0 on u1_0.user_id=r1_0.user_id where u1_0.username=?
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.13</a> at Apr 26, 2025, 12:25:02 PM</p>
+</div>
+</div>
+</body>
+</html>

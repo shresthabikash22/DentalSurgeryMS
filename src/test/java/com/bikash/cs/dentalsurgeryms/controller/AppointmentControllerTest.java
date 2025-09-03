@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
+@ActiveProfiles("test") 
 @WebMvcTest(AppointmentController.class)
 class AppointmentControllerTest {
 

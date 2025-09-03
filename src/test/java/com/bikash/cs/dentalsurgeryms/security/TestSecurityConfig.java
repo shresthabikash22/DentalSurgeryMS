@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@ActiveProfiles("test") 
 @Profile("test") // CRITICAL: Only activate during tests
 public class TestSecurityConfig {
 

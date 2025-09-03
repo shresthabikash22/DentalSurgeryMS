@@ -31,6 +31,25 @@ jobs:
         run: ./gradlew test --no-daemon -Dspring.profiles.active=test
         # If tests still fail, add temporarily:
         # continue-on-error: true
+      - name: Debug - Check project structure
+        run: |
+          echo "=== Project Structure ==="
+          find . -name "*.java" -path "*/test/*" | head -10
+          echo "=== Test Resources ==="
+          find src/test/resources -type f
+          echo "=== Test Properties Content ==="
+          cat src/test/resources/application-test.properties || echo "No test properties file"
+
+      - name: Debug - Check test results
+        run: |
+          echo "=== Test Reports ==="
+          find build/reports/tests -name "*.xml" -o -name "*.html" | head -5
+          echo "=== Test Logs ==="
+          find build/test-results -name "*.xml" | head -3
+          cat build/test-results/test/*.xml 2>/dev/null | head -50 || echo "No test results yet"
+
+      - name: Run tests with verbose output
+        run: ./gradlew test --no-daemon --info --console=verbose -Dspring.profiles.active=test
 
       - name: List build outputs
         run: ls -la build/libs/
@@ -71,3 +90,4 @@ jobs:
           app-name: 'DentalSurgeryManagementSystem'
           slot-name: 'Production'
           package: '*.jar'
+
